@@ -42,6 +42,10 @@ const routes: Routes = [
   {
     path: 'ver-realizado',
     loadChildren: () => import('./ver-realizado/ver-realizado.module').then( m => m.VerRealizadoPageModule)
+  },
+  {
+    path: 'prueba',
+    loadChildren: () => import('./prueba/prueba.module').then( m => m.PruebaPageModule)
   }
 ];
 
