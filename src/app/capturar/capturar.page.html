@@ -1,0 +1,86 @@
+<ion-toolbar>
+ <ion-button slot="start" [routerLink]="['/pendientes']">
+       <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+       Volver
+ </ion-button>
+ <img slot=end src="/assets/logos/figura.png">
+</ion-toolbar>
+
+<ion-content>
+
+        <ion-label class="idcaptura">#123123{{idCaptura}}</ion-label>
+  <div class="contenedor-datos"> 
+              <div class="cajita">
+            <div class="uno"><ion-label>ID</ion-label></div>
+            <div class="dos"><ion-label>1{{ID}}</ion-label></div>
+              </div>
+              <div class="cajita">
+            <div class="uno" ><ion-label>Nombre</ion-label></div>
+            <div class="dos"><ion-label>Alma Julissa Casillas Mendivil{{nombre}}</ion-label></div>
+              </div>
+              <div>
+                 <ion-label style="font-weight:600;">Dirección</ion-label><br>
+                  <div class="direccion">
+              <ion-label>Benjamin Chaparro{{calle}}</ion-label><br>
+              <ion-label>#{{numero}}</ion-label><br>
+              <ion-label>Col. Centro {{colonia}}</ion-label>
+                  </div>    
+              </div>
+
+              <div class="captura">
+                <ion-label>Ingresar lectura</ion-label>
+                <ion-input type="password"></ion-input>
+                <ion-label>Confirmar lectura</ion-label>
+                <ion-input type="password"></ion-input>
+                </div>
+               
+                <div class="anomalias">
+                   <ion-accordion-group>
+                    <ion-accordion value="first">
+                      <ion-item slot="header" color="light">
+                        <ion-label>Anomalías</ion-label>
+                      </ion-item>
+                      <div class="ion-padding" slot="content">
+                        <ion-list>
+                          <ion-item *ngFor="let entry of form">
+                            <ion-label>{{entry.val}}</ion-label>
+                            <ion-checkbox slot="end" [(ngModel)]="entry.isChecked"></ion-checkbox>
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-accordion>
+          
+                  </ion-accordion-group>
+                </div>
+  </div>
+
+
+        
+        <div class="foto">
+          <ion-label>Capturar</ion-label><br>
+         <ion-button size="large"><ion-icon name="camera-outline"></ion-icon></ion-button>  
+        </div>
+       
+        <div class="galeria">
+         
+            <ion-slides [options]="option" class="ion-margin-top">
+               <ion-slide>
+                <ion-card>
+                  <img src="/assets/logos/smartmetric-original.png">
+                </ion-card>
+               </ion-slide>
+               <ion-slide>
+                <ion-card>
+                  <img src="/assets/logos/figura.png">
+                </ion-card>
+               </ion-slide>
+
+            </ion-slides>
+
+        </div>
+        <div class="buttons">
+           <ion-button class="visualizar" [routerLink]="['/reporte']" size="large">Visualizar</ion-button>
+           <ion-button  size="large">Finalizar</ion-button>
+
+        </div>
+</ion-content>

@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Pendientes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Prendientes</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <h1 class="btn_titulo">Pendientes</h1>
+
+  <ion-list>
+          <ion-item *ngFor="let user of users">
+            <ion-icon name="time"></ion-icon>
+            <ion-label class="label">
+              <h2>#{{user.id}}</h2>
+              <h2>{{user.name}}</h2>
+              <h2>{{user.direccion}}</h2>
+            </ion-label>
+            <button class="btn_cap">Capturar</button>
+          </ion-item>
+  </ion-list>
+
+
+  
+    
+  
+</ion-content>

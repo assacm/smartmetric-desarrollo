@@ -1,0 +1,31 @@
+{
+    "data": [
+        {
+            "id": "01",
+            "name": "Jose perez",
+            "direccion": "Pueblitos #44"
+        },
+        {
+            "id": "02",
+            "name": "Jesus Ortega",
+            "direccion": "Olivares #334"
+        },
+        {
+            "id": "03",
+            "name": "Luis Cortez",
+            "direccion": "Granados #88"
+        },
+        {
+            "id": "04",
+            "name": "Manuel Perez",
+            "direccion": "Pitic A. #128"
+        },
+        {
+            "id": "05",
+            "name": "Daniel Sanchez",
+            "direccion": "Altares #844"
+        }
+        
+    ]
+
+}

@@ -1,0 +1,47 @@
+
+
+  .header {
+    vertical-align: middle; 
+    object-fit: contain;
+    height: 65px;
+    width: 70px; 
+    font-size: 50px;
+   } 
+   .header ion-label{
+     font-family: 'Segoe UI';
+   }
+   div{
+     text-align: center;
+     margin: 30px auto;
+   }
+
+  .logo img{
+    width: auto;
+    height: 200px;
+  }
+  
+  ion-item{
+    padding: 15px;
+    --background: #F3F3F3;
+    --border-radius:50px;
+  }
+
+  ion-icon{
+    padding: 15px
+  }
+  ion-button{
+    --margin: 70px auto;
+    --border-radius:15px;
+    font-size: 20px;
+    text-transform: none;
+  }
+  .formulario ion-label{
+      color: #8D8D8D;
+      font-family:'Segoe UI';
+  }
+  b{
+    color:#3D3B3B;
+    font-size: 25px;
+    padding: 10px;
+  }
+

@@ -1,0 +1,28 @@
+
+
+<ion-content>
+ 
+   <div class="logo">
+    <img src="/assets/logos/smartmetric-original.png">
+   </div>
+
+    <div> <img class="header"src="/assets/icons/login.png" alt="" ><B>Inicio de sesión</B></div>  
+   
+    <div class="formulario"> 
+       
+          <ion-label class="etiqueta">Ingresar usuario</ion-label>
+          <ion-item>
+            <ion-icon name="person"></ion-icon>
+            <ion-input placeholder="Usuario" class="primary-input"></ion-input>
+          </ion-item>
+          
+          <ion-label class="etiqueta">Ingresar contraseña</ion-label>
+          <ion-item>
+            <ion-icon name="lock-closed"></ion-icon>
+            <ion-input type="password" placeholder="Contraseña" class="primary-input"></ion-input>
+          </ion-item>    
+          <ion-button [routerLink]="['/pendientes']" color="primary" size="large" >Inciar sesión</ion-button>
+
+    </div>
+
+</ion-content>

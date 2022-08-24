@@ -1,0 +1,60 @@
+<ion-toolbar>
+  <ion-button slot="start" [routerLink]="['/capturar']">
+        <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+        Volver
+  </ion-button>
+  <img slot=end src="/assets/logos/figura.png">
+ </ion-toolbar>
+
+<ion-content>
+  <ion-label class="idcaptura">#123123{{idCaptura}}</ion-label>
+
+  <div class="galeria">
+         
+    <ion-slides [options]="option" class="ion-margin-top">
+       <ion-slide>
+        <ion-card>
+          <img src="/assets/logos/smartmetric-original.png">
+        </ion-card>
+       </ion-slide>
+       <ion-slide>
+        <ion-card>
+          <img src="/assets/logos/figura.png">
+        </ion-card>
+       </ion-slide>
+
+    </ion-slides>
+
+</div>
+
+<div class="contenedor-datos"> 
+  <div class="cajita">
+    <div class="uno"><ion-label>ID</ion-label></div>
+    <div class="dos"><ion-label>{{ID}}</ion-label></div>
+  </div>
+  <div class="cajita">
+    <div class="uno"><ion-label>Nombre</ion-label></div>
+    <div class="dos"><ion-label>{{nombre}}</ion-label></div>
+  </div>
+  <div class="cajita">
+    <div class="uno"><ion-label>Captura</ion-label></div>
+    <div class="dos"><ion-label>{{calle}} #{{numero}} {{Colonia}} {{fecha}} {{hora}}</ion-label></div>
+  </div>
+  <div class="cajita">
+    <div class="uno"><ion-label>Lectura</ion-label></div>
+    <div class="dos"><ion-label>{{lectura}}</ion-label></div>
+  </div>
+  <div class="cajita">
+    <div class="uno"><ion-label>Lect. Anterior</ion-label></div>
+    <div class="dos"><ion-label>{{lecAnterior}}</ion-label></div>
+  </div>
+  <div class="cajita">
+    <div class="uno"><ion-label>Consumo</ion-label></div>
+    <div class="dos"><ion-label>{{consumo}}</ion-label></div>
+  </div>
+  <div class="cajita">
+    <div class="uno"><ion-label>Total</ion-label></div>
+    <div class="dos"><ion-label>{{total}}</ion-label></div>
+  </div>
+</div>
+</ion-content>
