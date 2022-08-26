@@ -3,27 +3,37 @@
         {
             "id": "01",
             "name": "Jose perez",
-            "direccion": "Pueblitos #44"
+            "direccion": "Pueblo de alamos #655",
+            "medidor": 123,
+            "mes": "agosto"
         },
         {
             "id": "02",
             "name": "Jesus Ortega",
-            "direccion": "Olivares #334"
+            "direccion": "Olivares #334",
+            "medidor": 163,
+            "mes": "agosto"
         },
         {
             "id": "03",
             "name": "Luis Cortez",
-            "direccion": "Granados #88"
+            "direccion": "Granados #88",
+            "medidor": 1223,
+            "mes": "agosto"
         },
         {
             "id": "04",
             "name": "Manuel Perez",
-            "direccion": "Pitic A. #128"
+            "direccion": "Pitic A. #128",
+            "medidor": 113,
+            "mes": "agosto"
         },
         {
             "id": "05",
             "name": "Daniel Sanchez",
-            "direccion": "Altares #844"
+            "direccion": "Altares #844",
+            "medidor": 1213,
+            "mes": "agosto"
         }
         
     ]
