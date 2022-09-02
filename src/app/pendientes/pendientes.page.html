@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -14,6 +14,7 @@
     </ion-toolbar>
   </ion-header>
 
+
   <h1 class="btn_titulo">Pendientes</h1>
 
   <ion-list>
@@ -26,10 +27,37 @@
             </ion-label>
             <button class="btn_cap" [routerLink]="['/capturar']">Capturar</button>
           </ion-item>
+
+  <ion-list>  
+            <ion-card *ngFor="let user of users">
+              <ion-card-subtitle id="id_user">ID: {{user.id}}</ion-card-subtitle>
+              <ion-card-header>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col class="row_mar">
+                      <ion-card-subtitle>Direccion:</ion-card-subtitle>
+                      <ion-card-title>{{user.direccion}}</ion-card-title><br>
+                      </ion-col>
+                      <ion-col>
+                      <ion-card-subtitle>Nombre:</ion-card-subtitle>
+                      <ion-card-title>{{user.name}}</ion-card-title>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col class="row_mar">
+                      <ion-card-subtitle>Medidor:</ion-card-subtitle>
+                      <ion-card-title>{{user.medidor}}</ion-card-title><br>
+                      </ion-col>
+                      <ion-col>
+                      <ion-card-subtitle>Mes de lectura:</ion-card-subtitle>
+                      <ion-card-title>{{user.mes}}</ion-card-title>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-header>
+            </ion-card>
+
   </ion-list>
-
-
-  
     
   
 </ion-content>
