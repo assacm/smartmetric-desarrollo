@@ -6,14 +6,9 @@ import { map } from 'rxjs/operators';
 })
 export class LoginServiceService {
    _url='https://real14.sysbiterp.com/api/index.php/'
-   //'https://real14.sysbiterp.com/api/index.php/login?login=jperez&password=intern123456'
-  
+   
    constructor(public http:HttpClient) { 
      console.log("Mi servicio");
-   }
-
-   getApi(user:string, pass:string, endpoint:string){
-    return this.http.get( this._url + endpoint + '?login='+ user +'&password='+pass);
    }
 
    getApiJSON(item, endpoint:string){
@@ -38,3 +33,8 @@ export class LoginServiceService {
 
    }
 }
+
+
+//'https://real14.sysbiterp.com/api/index.php/login?login=jperez&password=intern123456'
+
+
