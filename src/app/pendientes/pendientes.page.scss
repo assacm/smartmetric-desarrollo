@@ -50,3 +50,22 @@
     color: rgb(68, 68, 68);
     margin: 20px;
   }
+
+  #id_user{
+    margin-left: 27px;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.row_mar{
+  margin-right: 50px;
+}
+
+ion-card{
+  --background: rgb(255, 250, 244);
+  margin-bottom: 15px;
+  border-radius: 20px;
+  box-shadow: -9px -9px 0px -1px rgba(247,159,28,1);
+-webkit-box-shadow: -9px -9px 0px -1px rgba(247,159,28,1);
+-moz-box-shadow: -9px -9px 0px -1px rgba(247,159,28,1);
+}
