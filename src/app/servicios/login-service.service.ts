@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpClientModule, HttpHeaders} from '@angular/common/http'
+import {HttpClient, HttpClientModule, HttpHeaders,HttpErrorResponse} from '@angular/common/http'
 import { map } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,8 +20,9 @@ export class LoginServiceService {
               'Content-Type': 'application/json',
             })
           }
-    return this.http.post(this._url + endpoint, item, httpOptions );
-   }
+    return this.http.post(this._url + endpoint, item, httpOptions ).pipe( 
+    );
+   } //
 
    getUsers(endpoint,token){
     let httpOptions = {
