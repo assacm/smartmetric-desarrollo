@@ -55,6 +55,7 @@
     margin-left: 27px;
     margin-top: 15px;
     font-weight: bold;
+    color:#7a7777;
 }
 
 .row_mar{
@@ -62,10 +63,42 @@
 }
 
 ion-card{
+  //estilo1
+  
   --background: rgb(255, 250, 244);
   margin-bottom: 15px;
   border-radius: 20px;
-  box-shadow: -9px -9px 0px -1px rgba(247,159,28,1);
--webkit-box-shadow: -9px -9px 0px -1px rgba(247,159,28,1);
--moz-box-shadow: -9px -9px 0px -1px rgba(247,159,28,1);
+  box-shadow: -9px -9px 0px -1px rgba(246,107,0,1);
+-webkit-box-shadow: -9px -9px 0px -1px rgba(246,107,0,1);
+-moz-box-shadow: -9px -9px 0px -1px rgba(246,107,0,1); 
+//rgba(246,107,0,1) color smartmetric --- rgba(247,159,28,1) primera version
+
+//estilo2
+/*border-radius: 20px;
+ --background: #fff;
+ margin-top: 30px;
+ margin-bottom: 35px;
+ border-top: 1px double rgb(255,213,179);
+border-left: 1px double rgb(255,213,179);
+box-shadow: -4px -4px 9px 0px rgba(255,127,0,0.75);
+-webkit-box-shadow: -4px -4px 9px 0px rgba(255,127,0,0.75);
+-moz-box-shadow: -4px -4px 9px 0px rgba(255,127,0,0.75); 
+*/
+//estilo3
+/*box-shadow: -4px -4px 9px 0px rgba(255,194,146,0.75);
+-webkit-box-shadow: -4px -4px 9px 0px rgba(255,194,146,0.75);
+-moz-box-shadow: -4px -4px 9px 0px rgba(255,194,146,0.75);*/
 }
+
+/*
+ion-container{
+  font-family:'Segoe UI';
+}
+ion-card-subtitle{
+  font-weight:600 ;
+  color:#ea6703;
+}
+ion-card-title{
+  color:#383838;
+}
+*/

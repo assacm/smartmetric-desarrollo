@@ -15,27 +15,27 @@
   </ion-header>
 
   <ion-list>  
-            <ion-card *ngFor="let user of users">
-              <ion-card-subtitle id="id_user">ID: {{user.id}}</ion-card-subtitle>
+            <ion-card [routerLink]="['/capturar']" *ngFor="let user of users">
+              <ion-card-subtitle id="id_user">ID{{user.id}}</ion-card-subtitle>
               <ion-card-header>
                 <ion-grid>
                   <ion-row>
                     <ion-col class="row_mar">
-                      <ion-card-subtitle>Direccion:</ion-card-subtitle>
+                      <ion-card-subtitle>Dirección</ion-card-subtitle>
                       <ion-card-title>{{user.direccion}}</ion-card-title><br>
                       </ion-col>
                       <ion-col>
-                      <ion-card-subtitle>Nombre:</ion-card-subtitle>
+                      <ion-card-subtitle>Nombre</ion-card-subtitle>
                       <ion-card-title>{{user.name}}</ion-card-title>
                     </ion-col>
                   </ion-row>
                   <ion-row>
                     <ion-col class="row_mar">
-                      <ion-card-subtitle>Medidor:</ion-card-subtitle>
+                      <ion-card-subtitle>Medidor</ion-card-subtitle>
                       <ion-card-title>{{user.medidor}}</ion-card-title><br>
                       </ion-col>
                       <ion-col>
-                      <ion-card-subtitle>Mes de lectura:</ion-card-subtitle>
+                      <ion-card-subtitle>Mes de lectura</ion-card-subtitle>
                       <ion-card-title>{{user.mes}}</ion-card-title>
                     </ion-col>
                   </ion-row>
