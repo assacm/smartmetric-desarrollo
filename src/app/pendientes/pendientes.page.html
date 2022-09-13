@@ -14,8 +14,11 @@
     </ion-toolbar>
   </ion-header>
 
+
+  <h1 class="btn_titulo">Pendientes</h1>
+
   <ion-list>  
-            <ion-card *ngFor="let user of users">
+            <ion-card [routerLink]="['/capturar']" *ngFor="let user of users">
               <ion-card-subtitle id="id_user">ID: {{user.id}}</ion-card-subtitle>
               <ion-card-header>
                 <ion-grid>
@@ -42,6 +45,7 @@
                 </ion-grid>
               </ion-card-header>
             </ion-card>
+
   </ion-list>
     
   
