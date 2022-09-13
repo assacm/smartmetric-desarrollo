@@ -32,7 +32,7 @@ const routes: Routes = [
     loadChildren: () => import('./log-in/log-in.module').then( m => m.LogInPageModule)
   },
   {
-    path: 'capturar',
+    path: 'capturar/:id',
     loadChildren: () => import('./capturar/capturar.module').then( m => m.CapturarPageModule)
   },
   {

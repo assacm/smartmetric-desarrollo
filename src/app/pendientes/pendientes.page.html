@@ -10,36 +10,33 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Prendientes</ion-title>
+      <ion-title size="large">Pendientes</ion-title>
     </ion-toolbar>
   </ion-header>
 
-
-  <h1 class="btn_titulo">Pendientes</h1>
-
   <ion-list>  
-            <ion-card [routerLink]="['/capturar']" *ngFor="let user of users">
-              <ion-card-subtitle id="id_user">ID: {{user.id}}</ion-card-subtitle>
+            <ion-card [routerLink]="['/capturar', user.ref]" *ngFor="let user of users">
+              <ion-card-subtitle id="id_user">ID {{user.ref}}</ion-card-subtitle>
               <ion-card-header>
                 <ion-grid>
                   <ion-row>
                     <ion-col class="row_mar">
-                      <ion-card-subtitle>Direccion:</ion-card-subtitle>
-                      <ion-card-title>{{user.direccion}}</ion-card-title><br>
+                      <ion-card-subtitle>Dirección</ion-card-subtitle>
+                      <ion-card-title>{{user.address}}</ion-card-title><br>
                       </ion-col>
                       <ion-col>
-                      <ion-card-subtitle>Nombre:</ion-card-subtitle>
+                      <ion-card-subtitle>Nombre</ion-card-subtitle>
                       <ion-card-title>{{user.name}}</ion-card-title>
                     </ion-col>
                   </ion-row>
                   <ion-row>
                     <ion-col class="row_mar">
-                      <ion-card-subtitle>Medidor:</ion-card-subtitle>
-                      <ion-card-title>{{user.medidor}}</ion-card-title><br>
+                      <ion-card-subtitle>Medidor</ion-card-subtitle>
+                      <ion-card-title>{{user.measurer}}</ion-card-title><br>
                       </ion-col>
                       <ion-col>
-                      <ion-card-subtitle>Mes de lectura:</ion-card-subtitle>
-                      <ion-card-title>{{user.mes}}</ion-card-title>
+                      <ion-card-subtitle>Mes de lectura</ion-card-subtitle>
+                      <ion-card-title>{{user.month}}</ion-card-title>
                     </ion-col>
                   </ion-row>
                 </ion-grid>
