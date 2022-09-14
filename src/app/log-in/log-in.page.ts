@@ -41,7 +41,7 @@ export class LogInPage implements OnInit {
      this.alert('Alerta', 'Datos incompletos')
 
     }else{
-    this.loginService.getApiJSON(jsonLogin, 'login').subscribe( res =>{
+    this.loginService.login(jsonLogin).subscribe( res =>{
       console.log(res['success']['token']);
       localStorage.setItem('token',res['success']['token']);
       this.router.navigate(['/pendientes']);

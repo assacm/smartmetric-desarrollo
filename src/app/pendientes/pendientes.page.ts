@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { LoginServiceService } from '../servicios/login-service.service';
-
+import { UsersService } from '../servicios/users.service';
 @Component({
   selector: 'app-pendientes',
   templateUrl: './pendientes.page.html',
@@ -17,24 +15,19 @@ export class PendientesPage implements OnInit {
   medidor: string;
   direccion: string;
   mes: string;
-  //usuarios: any;
-
-  constructor(private http: HttpClient, private loginService:LoginServiceService) { }
+  constructor(private http: HttpClient, private usuarios:UsersService) { }
 
   ngOnInit(){
-    //this.getUsers().subscribe(res=>{
-    //  console.log("res", res)
-   //   this.users = res;
-   // });
-
-    this.loginService.getUsers('smartmetricapi/readingss',this.token).subscribe(res=>{
+    this.usuarios.users(this.token).subscribe(res=>{
       console.log("res", res)
       this.users=res;
-      this.nombre= this.users[this.id].name;
-     // this.medidor= this.users[this.id]
-      // this.direccion=
-      //this.mes=
+    
     });
+
+    //  this.getUsers().subscribe(res=>{
+    //  console.log("res", res)
+    //  this.users = res;
+    // });
   }
 
  /* getUsers(){
