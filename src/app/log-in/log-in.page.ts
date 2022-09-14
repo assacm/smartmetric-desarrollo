@@ -37,16 +37,24 @@ export class LogInPage implements OnInit {
 
 
     if (this.formularLogin.invalid) {
-      const alert = await this.alertController.create({
-        header: 'Datos incompletos',
-        message: 'Debe completar los campos',
-        buttons: ['Aceptar'],
-      });
+      
+     this.alert('Alerta', 'Datos incompletos')
 
-      await alert.present();
     }else{
-    this.loginService.getApiJSON(jsonLogin, 'login').pipe(
-      map((info:any) => { console.log('map',info.success.token);
+    this.loginService.getApiJSON(jsonLogin, 'login').subscribe( res =>{
+      console.log(res['success']['token']);
+      localStorage.setItem('token',res['success']['token']);
+      this.router.navigate(['/pendientes']);
+
+    },(error)=>{
+       console.log(error)
+       this.alert('Alerta','Credenciales incorrectas')
+
+      // if(error.status)
+    })
+    /*.pipe(
+      map((info:any) => { 
+       console.log('map',info.success.token);
        localStorage.setItem('token',info.success.token);
        this.router.navigate(['/pendientes']);
       }))
@@ -64,11 +72,19 @@ export class LogInPage implements OnInit {
 
         await alert.present();
       })
-    }
-
+    */}
     this.formularLogin.reset();
   }
 
+  async alert(header:string,message:string){
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['Aceptar'],
+    });
+
+    await alert.present();
+  }
 }
 
   /*login1()
