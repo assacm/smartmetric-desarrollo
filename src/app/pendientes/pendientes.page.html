@@ -10,13 +10,16 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
+
       <ion-title size="large">Pendientes</ion-title>
+
     </ion-toolbar>
   </ion-header>
 
   <ion-list>  
             <ion-card [routerLink]="['/capturar', user.ref]" *ngFor="let user of users">
               <ion-card-subtitle id="id_user">ID {{user.ref}}</ion-card-subtitle>
+
               <ion-card-header>
                 <ion-grid>
                   <ion-row>
