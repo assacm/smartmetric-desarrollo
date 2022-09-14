@@ -8,12 +8,21 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { HttpClient, HttpClientModule } from '@angular/common/http'
-import {LoginServiceService} from '../app/servicios/login-service.service'
+import { HttpMetodosService } from './servicios/http-metodos.service';
+import { LoginServiceService} from '../app/servicios/login-service.service'
+import { UsersService } from './servicios/users.service';
+import {AnomaliasService} from '../app/servicios/anomalias.service'
+
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
-  providers: [LoginServiceService,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: 
+  [ HttpMetodosService,
+    LoginServiceService,
+    UsersService,
+    AnomaliasService,
+  { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
