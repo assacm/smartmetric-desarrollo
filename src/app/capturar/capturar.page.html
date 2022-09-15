@@ -12,7 +12,7 @@
   <div class="contenedor-datos"> 
               <div class="cajita">
             <div class="uno"><ion-label>ID</ion-label></div>
-            <div class="dos"><ion-label>#1231{{ID}}</ion-label></div>
+            <div class="dos"><ion-label>{{id}}</ion-label></div>
               </div>
               <div class="cajita">
             <div class="uno" ><ion-label>Nombre</ion-label></div>
@@ -22,15 +22,16 @@
               <div class="cajita">
                   <div class="uno"> <ion-label style="font-weight:600;">Dirección</ion-label> </div>
                   <div class="dos">
-                     <ion-label>Benjamin Chaparro{{calle}}</ion-label><br>
-                     <ion-label>#108 {{numero}}</ion-label><br>
+                     <ion-label>{{direccion}}</ion-label><br>
+                <!--     <ion-label>#108 {{numero}}</ion-label><br>
                      <ion-label>Col. Centro {{colonia}}</ion-label>
+                 -->
                   </div>    
                 </div>
               
               <div class="cajita">
                 <div class="uno"><ion-label>Lectura anterior</ion-label></div>
-                <div class="dos"> <ion-label>54644768779</ion-label></div>
+                <div class="dos"> <ion-label>{{lecAnterior}}</ion-label></div>
               </div>  
               <div [formGroup]="fgCaptura" class="captura">
                 <ion-label>Ingresar lectura</ion-label>
@@ -48,8 +49,8 @@
                       <div class="ion-padding" slot="content">
                         <ion-list>
                           <ion-item *ngFor="let entry of form">
-                            <ion-label>{{entry.val}}</ion-label>
-                            <ion-checkbox slot="end" [(ngModel)]="entry.isChecked"></ion-checkbox>
+                            <ion-label>{{entry}}</ion-label>
+                            <ion-checkbox slot="end"></ion-checkbox>
                           </ion-item>
                         </ion-list>
                       </div>

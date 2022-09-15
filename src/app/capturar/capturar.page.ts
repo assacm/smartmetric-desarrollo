@@ -4,8 +4,8 @@ import { FormGroup, FormArray, Validators, FormBuilder, FormControl, RequiredVal
 import { of } from 'rxjs';
 import { AlertController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
-import { LoginServiceService } from '../servicios/login-service.service';
-
+import { AnomaliasService } from '../servicios/anomalias.service';
+import { UsersService } from '../servicios/users.service';
 @Component({
   selector: 'app-capturar',
   templateUrl: './capturar.page.html',
@@ -20,19 +20,20 @@ export class CapturarPage implements OnInit {
   direccion: string;
   mes: string;
   usuarios: any;
-  
-  public form = [
+  lecAnterior:string = "3456788"
+ 
+  public form:any;
+   /*=[
     { val: 'Ninguna', isChecked: true },
     { val: 'Sin cambios', isChecked: false },
     { val: 'Sin medidor', isChecked: false }
-  ];
+  ]; */
   
   option={
     slidesPerView:1.5,
     centeredSlides: true,
     loop:true,
-    spaceBetween:10,
-   
+    spaceBetween:10  
   }
   constructor(
     private alertController: AlertController, 
@@ -40,7 +41,8 @@ export class CapturarPage implements OnInit {
     private router: Router, 
     private http: HttpClient,
     private activatedRoute: ActivatedRoute,
-    private loginService:LoginServiceService) { 
+    private users : UsersService,
+    private anomalias: AnomaliasService) { 
     this.fgCaptura = this.fb.group({
       "lectura": new FormControl("",Validators.compose([Validators.required,Validators.minLength(10)]) ),
       "confirmar": new FormControl("",Validators.compose([Validators.required,Validators.minLength(10)]) )
@@ -49,17 +51,35 @@ export class CapturarPage implements OnInit {
   }
 
   ngOnInit() {
-    this.id = this.activatedRoute.snapshot.paramMap.get("id");
-    this.loginService.getUsers('smartmetricapi/readingss', this.token).subscribe(res=>{
+    this.id = this.activatedRoute.snapshot.paramMap.get('id');
+    console.log('id ', this.id)
+    this.users.users( this.token).subscribe(res=>{
       console.log("res", res)
-      console.log('wenas wenas')
       this.usuarios= res;
+      console.log('id ', this.id)
+      let i:number= 0;
+      while(this.usuarios[i] != this.id){
+       
+        if(this.usuarios[i].ref == this.id){
+          console.log('es igual')
+          this.nombre= this.usuarios[i].name;
+          this.medidor= this.usuarios[i].measurer;
+          this.direccion= this.usuarios[i].address;
+          this.mes= this.usuarios[i].month;
+          break;      
+        }
+        i++;
+        
+        console.log(i)
+      }
+      
+  
+    });
 
-      //this.nombre=  this.usuarios[this.id].name;
-     // this.medidor= this.usuarios[this.id]
-      //this.direccion=
-      //this.mes=
-      //this.usuarios=
+    this.anomalias.getAnomalias(this.token).subscribe(res=>{
+      console.log("anomalias", res)
+      this.form=res;
+    
     });
   }
   
