@@ -6,7 +6,8 @@ import { map } from 'rxjs/operators';
 import { FormGroup, FormArray, Validators, FormBuilder, FormControl, RequiredValidator } from '@angular/forms';
 import { of } from 'rxjs';
 import { AlertController } from '@ionic/angular';
-
+import { AnomaliasService } from '../servicios/anomalias.service';
+import { UsersService } from '../servicios/users.service';
 @Component({
   selector: 'app-log-in',
   templateUrl: './log-in.page.html',
@@ -16,8 +17,14 @@ export class LogInPage implements OnInit {
   formularLogin: FormGroup;
 
   respuesta: any;
-
-  constructor(private alertController: AlertController, public fb: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute, private loginService: LoginServiceService) {
+  token:any;
+  constructor(private alertController: AlertController, 
+    public fb: FormBuilder, 
+    private router: Router, 
+    private activatedRoute: ActivatedRoute, 
+    private loginService: LoginServiceService,
+    private anomalias: AnomaliasService,
+    private users: UsersService) {
     this.formularLogin = this.fb.group({
       "user": new FormControl("",Validators.required),
       "password": new FormControl("",Validators.compose([Validators.required,Validators.minLength(8)]) )
@@ -41,38 +48,27 @@ export class LogInPage implements OnInit {
      this.alert('Alerta', 'Datos incompletos')
 
     }else{
+      //cargamos todos los servicios y almacenamos en local storage
     this.loginService.login(jsonLogin).subscribe( res =>{
       console.log(res['success']['token']);
       localStorage.setItem('token',res['success']['token']);
+      this.token= localStorage.getItem('token');
+      //pendientes
+      
+      //anomalías
+      this.anomalias.getAnomalias(this.token).subscribe( res =>{
+        console.log(res);
+        localStorage.setItem('anomalias', JSON.stringify(res));
+      })
       this.router.navigate(['/pendientes']);
 
     },(error)=>{
        console.log(error)
        this.alert('Alerta','Credenciales incorrectas')
 
-      // if(error.status)
+      // if(error.status){enviar alerta correspondiente al error}
     })
-    /*.pipe(
-      map((info:any) => { 
-       console.log('map',info.success.token);
-       localStorage.setItem('token',info.success.token);
-       this.router.navigate(['/pendientes']);
-      }))
-      .subscribe(res => {
-        console.log('suscribe',res)
-        //this.respuesta = res;
-      }, async (error) => {
-        console.log('error',error)
-        //this.respuesta = error;
-        const alert = await this.alertController.create({
-          header: 'Datos incorrectos',
-          message: 'Verificar datos ingresados',
-          buttons: ['Aceptar'],
-        });
-
-        await alert.present();
-      })
-    */}
+    }
     this.formularLogin.reset();
   }
 
@@ -87,39 +83,4 @@ export class LogInPage implements OnInit {
   }
 }
 
-  /*login1()
-  { 
-    let jsonLogin ={
-             "login": this.user,
-             "password": this.password
-                  }
-    
-      this.loginService.getApi(this.user,this.password,'login').subscribe(res=>{
-      console.log(res)
-     })
-
-
-    /*abre comentario
-     this.loginService.getApi(this.user,this.password,'login').subscribe(res=>{
-      console.log(res)
-   }) --aqui cierra el comentario
-  } */
-
-  /* login2(){
-    let jsonLogin ={
-      "login": this.user,
-      "password": this.password
-           }
-
-  this.loginService.getApiJSON(jsonLogin, 'login').subscribe(res =>{
-       console.log(res)
-       if(res!=[])
-        this.router.navigate(['/pendientes'])
-        //guardar token en localstorage
-       },(error)=>{
-        console.log(error)
-       })
-   
-    
-  } */
-
+  

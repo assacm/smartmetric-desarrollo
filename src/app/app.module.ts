@@ -13,7 +13,6 @@ import { LoginServiceService} from '../app/servicios/login-service.service'
 import { UsersService } from './servicios/users.service';
 import {AnomaliasService} from '../app/servicios/anomalias.service'
 
-
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
