@@ -1,14 +1,14 @@
-<ion-toolbar>
- <ion-button slot="start" [routerLink]="['/pendientes']">
+<ion-toolbar color="primary">
+ <ion-button color="primary" slot="start" [routerLink]="['/pendientes']">
        <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
        Volver
  </ion-button>
- <img slot=end src="/assets/logos/figura.png">
+ <img slot=end src="/assets/logos/figura-blanco.png">
 </ion-toolbar>
 
 <ion-content>
-
-        <ion-label class="idcaptura">#123123{{idCaptura}}</ion-label>
+      <div class="idcaptura"><ion-label>{{idCaptura}}</ion-label></div>
+        
   <div class="contenedor-datos"> 
               <div class="cajita">
             <div class="uno"><ion-label>ID</ion-label></div>
@@ -48,9 +48,15 @@
                       </ion-item>
                       <div class="ion-padding" slot="content">
                         <ion-list>
-                          <ion-item *ngFor="let entry of form">
-                            <ion-label>{{entry}}</ion-label>
-                            <ion-checkbox slot="end"></ion-checkbox>
+                          <ion-item *ngFor="let entry of detalles">
+                            <ion-label>{{entry.name}}</ion-label>
+                            <ion-checkbox (click)="getAnomalia(entry.name)" slot="end"></ion-checkbox>
+                          </ion-item>
+
+                          <ion-item>
+                            <ion-label>Otro: </ion-label>
+                            <ion-input [(ngModel)]="anomalia"></ion-input>
+                            <ion-checkbox (click)="getAnomalia(anomalia)" slot="end"></ion-checkbox>
                           </ion-item>
                         </ion-list>
                       </div>

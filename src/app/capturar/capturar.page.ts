@@ -21,13 +21,9 @@ export class CapturarPage implements OnInit {
   mes: string;
   usuarios: any;
   lecAnterior:string = "3456788"
- 
-  public form:any;
-   /*=[
-    { val: 'Ninguna', isChecked: true },
-    { val: 'Sin cambios', isChecked: false },
-    { val: 'Sin medidor', isChecked: false }
-  ]; */
+  idCaptura:string= "ID1233"
+  detalles = JSON.parse(localStorage.getItem('anomalias')); //asignamos anomalias en local storage
+  anomalia:string; //anomalía seleccionada
   
   option={
     slidesPerView:1.5,
@@ -41,8 +37,9 @@ export class CapturarPage implements OnInit {
     private router: Router, 
     private http: HttpClient,
     private activatedRoute: ActivatedRoute,
-    private users : UsersService,
-    private anomalias: AnomaliasService) { 
+    private users : UsersService
+   // private anomalias: AnomaliasService
+    ) { 
     this.fgCaptura = this.fb.group({
       "lectura": new FormControl("",Validators.compose([Validators.required,Validators.minLength(10)]) ),
       "confirmar": new FormControl("",Validators.compose([Validators.required,Validators.minLength(10)]) )
@@ -76,11 +73,11 @@ export class CapturarPage implements OnInit {
   
     });
 
-    this.anomalias.getAnomalias(this.token).subscribe(res=>{
+   /* this.anomalias.getAnomalias(this.token).subscribe(res=>{
       console.log("anomalias", res)
-      this.form=res;
+      this.detalles=res;
     
-    });
+    }); */
   }
   
   validacion(){
@@ -99,6 +96,7 @@ export class CapturarPage implements OnInit {
       }
       else{
         this.alert('Finalizado', 'Captura realizada con éxito')
+             
       }
  
      }
@@ -106,7 +104,16 @@ export class CapturarPage implements OnInit {
     // this.fgCaptura.reset();
 
   }
-
+    
+   /*anomaliass = [
+     {id:'1',nombre:'sin medidor', check: false}, 
+     {id:'2',nombre:'mal enrutado', check: false},
+     {id:'3',nombre:'sin casa', check: true}
+   ]*/
+  getAnomalia(item){
+     console.log(item);
+  } 
+     
   async alert(header:string,message:string){
     const alert = await this.alertController.create({
       header: header,
