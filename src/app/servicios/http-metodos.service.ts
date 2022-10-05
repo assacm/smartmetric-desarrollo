@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpClientModule, HttpHeaders,HttpErrorResponse} from '@angular/common/http';
 import { map } from 'rxjs/operators';
-
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class HttpMetodosService {
-  _url='https://real14.sysbiterp.com/api/index.php/'
   
   constructor(public http:HttpClient) { }
 
@@ -17,7 +16,7 @@ export class HttpMetodosService {
         'DOLAPIKEY': token
       })
     }
-    return this.http.get(this._url + endpoint , httpOptions).pipe( 
+    return this.http.get(environment._url + endpoint , httpOptions).pipe( 
       map((res : any) => {return res}
     ));
    }
@@ -29,7 +28,7 @@ export class HttpMetodosService {
            })
           }
 
-   return this.http.post(this._url + endpoint, item, httpOptions ).pipe( 
+   return this.http.post(environment._url + endpoint, item, httpOptions ).pipe( 
      map((res : any) => {return res}
    ))
   }
@@ -40,7 +39,7 @@ export class HttpMetodosService {
         'Content-Type': 'application/json',
       })
      }
-    this.http.put(this._url, body, httpOptions)
+    this.http.put(environment._url, body, httpOptions)
   }
 
   delete(endpoint:string){
@@ -49,7 +48,7 @@ export class HttpMetodosService {
         'Content-Type': 'application/json',
       })
      }
-    this.http.delete(this._url + endpoint, httpOptions)
+    this.http.delete(environment._url + endpoint, httpOptions)
   }
 }
 

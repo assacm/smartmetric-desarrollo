@@ -2,20 +2,19 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpClientModule, HttpHeaders,HttpErrorResponse} from '@angular/common/http'
 import { map } from 'rxjs/operators';
 import { HttpMetodosService } from './http-metodos.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginServiceService {
   
-   endpoint='login'
    constructor(public http:HttpClient,public metodos: HttpMetodosService) { 
-     console.log("Mi servicio");
    }
 
     login(item:any){
         
-      return this.metodos.post(this.endpoint, item);
+      return this.metodos.post(environment.endpoint.login, item);
     }
 
 }
@@ -47,8 +46,6 @@ export class LoginServiceService {
 
    
 }
-
 */
-//'https://real14.sysbiterp.com/api/index.php/login?login=jperez&password=intern123456'
 
 
