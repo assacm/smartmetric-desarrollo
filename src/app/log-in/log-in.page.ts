@@ -8,6 +8,7 @@ import { of } from 'rxjs';
 import { AlertController } from '@ionic/angular';
 import { AnomaliasService } from '../servicios/anomalias.service';
 import { UsersService } from '../servicios/users.service';
+import { EmployeService} from '../servicios/employe.service';
 @Component({
   selector: 'app-log-in',
   templateUrl: './log-in.page.html',
@@ -24,7 +25,8 @@ export class LogInPage implements OnInit {
     private activatedRoute: ActivatedRoute, 
     private loginService: LoginServiceService,
     private anomalias: AnomaliasService,
-    private users: UsersService) {
+    private users: UsersService,
+    private employe: EmployeService) {
     this.formularLogin = this.fb.group({
       "user": new FormControl("",Validators.required),
       "password": new FormControl("",Validators.compose([Validators.required,Validators.minLength(8)]) )
@@ -45,22 +47,28 @@ export class LogInPage implements OnInit {
 
     if (this.formularLogin.invalid) {
       
-     this.alert('Alerta', 'Datos incompletos')
-
-    }else{
-      //cargamos todos los servicios y almacenamos en local storage
-    this.loginService.login(jsonLogin).subscribe( res =>{
-      console.log(res['success']['token']);
-      localStorage.setItem('token',res['success']['token']);
-      this.token= localStorage.getItem('token');
-      //pendientes
+this.alert('Alerta', 'Datos incompletos')
+    }
+    else{
+      this.loginService.login(jsonLogin).subscribe( res =>{
+        console.log(res['success']['token']);
+        localStorage.setItem('token',res['success']['token']);
+        this.token= localStorage.getItem('token');
+        //pendientes
+        this.employe.employeInfo(jsonLogin.login, this.token).subscribe(
+          res => { 
+            this.users.users(this.token,res['id']).subscribe( 
+              res =>{
+                console.log(res)
+                localStorage.setItem('users', JSON.stringify(res))
+              });
+            })
+        //anomalías
+        this.anomalias.getAnomalias(this.token).subscribe( res =>{
+        localStorage.setItem('anomalies', JSON.stringify(res));
+        })
       
-      //anomalías
-      this.anomalias.getAnomalias(this.token).subscribe( res =>{
-        console.log(res);
-        localStorage.setItem('anomalias', JSON.stringify(res));
-      })
-      this.router.navigate(['/pendientes']);
+        this.router.navigate(['/pendientes']);
 
     },(error)=>{
        console.log(error)

@@ -12,6 +12,8 @@ import { HttpMetodosService } from './servicios/http-metodos.service';
 import { LoginServiceService} from '../app/servicios/login-service.service'
 import { UsersService } from './servicios/users.service';
 import {AnomaliasService} from '../app/servicios/anomalias.service'
+import { EmployeService } from './servicios/employe.service';
+import{ environment} from '../environments/environment'
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +23,7 @@ import {AnomaliasService} from '../app/servicios/anomalias.service'
     LoginServiceService,
     UsersService,
     AnomaliasService,
+    EmployeService,
   { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

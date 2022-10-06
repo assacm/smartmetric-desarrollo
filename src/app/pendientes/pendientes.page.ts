@@ -18,11 +18,9 @@ export class PendientesPage implements OnInit {
   constructor(private http: HttpClient, private usuarios:UsersService) { }
 
   ngOnInit(){
-    this.usuarios.users(this.token).subscribe(res=>{
-      console.log("res", res)
-      this.users=res;
-    
-    });
+    //this.usuarios.users(this.token).subscribe(res=>{
+    //  console.log("res", res)
+    //  this.users=res;});
 
     //  this.getUsers().subscribe(res=>{
     //  console.log("res", res)

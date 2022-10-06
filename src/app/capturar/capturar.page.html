@@ -7,64 +7,53 @@
 </ion-toolbar>
 
 <ion-content>
-      <div class="idcaptura"><ion-label>{{idCaptura}}</ion-label></div>
+      <div class="idcaptura"><ion-label>{{captureID}}</ion-label></div>
         
-  <div class="contenedor-datos"> 
-              <div class="cajita">
-            <div class="uno"><ion-label>ID</ion-label></div>
+   <div class="contenedor-datos"> 
+      <div class="cajita">
+              <div class="uno"><ion-label>ID</ion-label></div>
             <div class="dos"><ion-label>{{id}}</ion-label></div>
-              </div>
-              <div class="cajita">
+      </div>
+      <div class="cajita">
             <div class="uno" ><ion-label>Nombre</ion-label></div>
-            <div class="dos"><ion-label>{{nombre}}</ion-label></div>
-              </div>
-
-              <div class="cajita">
+            <div class="dos"><ion-label>{{name}}</ion-label></div>
+      </div>
+      <div class="cajita">
                   <div class="uno"> <ion-label style="font-weight:600;">Dirección</ion-label> </div>
                   <div class="dos">
-                     <ion-label>{{direccion}}</ion-label><br>
+                     <ion-label>{{addres}}</ion-label><br>
                 <!--     <ion-label>#108 {{numero}}</ion-label><br>
                      <ion-label>Col. Centro {{colonia}}</ion-label>
                  -->
                   </div>    
-                </div>
-              
-              <div class="cajita">
+      </div>        
+      <div class="cajita">
                 <div class="uno"><ion-label>Lectura anterior</ion-label></div>
-                <div class="dos"> <ion-label>{{lecAnterior}}</ion-label></div>
-              </div>  
-              <div [formGroup]="fgCaptura" class="captura">
+                <div class="dos"> <ion-label>{{last}}</ion-label></div>
+      </div>  
+      <div  class="captura">
                 <ion-label>Ingresar lectura</ion-label>
-                <ion-input formControlName="lectura" type="password"></ion-input>
+                <ion-input [(ngModel)]="current" type="password"></ion-input>
                 <ion-label>Confirmar lectura</ion-label>
-                <ion-input formControlName="confirmar" type="password"></ion-input>
-                </div>
-               
-                <div class="anomalias">
-                   <ion-accordion-group>
-                    <ion-accordion value="first">
-                      <ion-item slot="header" color="light">
-                        <ion-label>Anomalías</ion-label>
-                      </ion-item>
-                      <div class="ion-padding" slot="content">
-                        <ion-list>
-                          <ion-item *ngFor="let entry of detalles">
-                            <ion-label>{{entry.name}}</ion-label>
-                            <ion-checkbox (click)="getAnomalia(entry.name)" slot="end"></ion-checkbox>
-                          </ion-item>
-
-                          <ion-item>
-                            <ion-label>Otro: </ion-label>
-                            <ion-input [(ngModel)]="anomalia"></ion-input>
-                            <ion-checkbox (click)="getAnomalia(anomalia)" slot="end"></ion-checkbox>
-                          </ion-item>
-                        </ion-list>
-                      </div>
-                    </ion-accordion>
-          
-                  </ion-accordion-group>
-                </div>
-  </div>
+                <ion-input [(ngModel)]="confirm" type="password"></ion-input>
+      </div>
+      <div class="anomalias">
+        <ion-list>
+          <ion-item>
+            <ion-select
+              multiple="true"
+              placeholder="Seleccione anomalía"
+              (ionChange)="handleChange($event)"
+              (ionCancel)="pushLog('ionCancel fired')"
+              (ionDismiss)="pushLog('ionDismiss fired')"
+              
+            >
+              <ion-select-option *ngFor="let anomaly of details" value="{{anomaly.rowid}}">{{anomaly.label}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </div>  
+   </div>
 
 
         
@@ -92,7 +81,34 @@
         </div>
         <div class="buttons">
            <ion-button class="visualizar" [routerLink]="['/reporte']" size="large">Visualizar</ion-button>
-           <ion-button (click)="validacion()" size="large">Finalizar</ion-button>
+           <ion-button (click)="validation()" size="large">Finalizar</ion-button>
 
         </div>
 </ion-content>
+
+<!--    
+      <div class="anomalias">
+                   <ion-accordion-group>
+                    <ion-accordion value="first">
+                      <ion-item slot="header" color="light">
+                        <ion-label>Anomalías</ion-label>
+                      </ion-item>
+                      <div class="ion-padding" slot="content">
+                        <ion-list>
+                          <ion-item *ngFor="let entry of detalles">
+                            <ion-label>{{entry.name}}</ion-label>
+                            <ion-checkbox (click)="getAnomalia(entry.name)" slot="end"></ion-checkbox>
+                          </ion-item>
+
+                          <ion-item>
+                            <ion-label>Otro: </ion-label>
+                            <ion-input [(ngModel)]="anomalia"></ion-input>
+                            <ion-checkbox (click)="getAnomalia(anomalia)" slot="end"></ion-checkbox>
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-accordion>
+          
+                  </ion-accordion-group>
+      </div>
+      -->  
