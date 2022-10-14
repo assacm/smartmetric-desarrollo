@@ -84,3 +84,22 @@ ion-card{
 -webkit-box-shadow: -9px -9px 0px -1px rgba(246,107,0,1);
 -moz-box-shadow: -9px -9px 0px -1px rgba(246,107,0,1);
 } //color smartmetric rgb  ---> rgb(246,107,0)    anterior ---->rgba(247,159,28,1);
+
+ion-card-subtitle{
+  margin-bottom:5px;
+}
+.cajita{
+  display: flex;
+  margin: 20px;
+}
+.cajita .uno{
+  font-style: bold;
+  width: 100px;
+  flex-grow: 2;
+  font-weight: 600;
+  margin-right: 10px;
+}
+ .cajita .dos{
+  width: 100px;
+  flex-grow: 2;
+}

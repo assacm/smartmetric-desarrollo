@@ -13,6 +13,7 @@ import { LoginServiceService} from '../app/servicios/login-service.service'
 import { UsersService } from './servicios/users.service';
 import {AnomaliasService} from '../app/servicios/anomalias.service'
 import { EmployeService } from './servicios/employe.service';
+import { ProductsService } from './servicios/products.service';
 import{ environment} from '../environments/environment'
 
 @NgModule({
@@ -24,6 +25,7 @@ import{ environment} from '../environments/environment'
     UsersService,
     AnomaliasService,
     EmployeService,
+    ProductsService,
   { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

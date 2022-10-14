@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { IReading } from '../interfaces';
 
 @Component({
   selector: 'app-reporte',
@@ -7,7 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReportePage implements OnInit {
 
-  constructor() { }
+  reading : IReading;
+  constructor(private actRoute : ActivatedRoute) { }
   option={
     slidesPerView:1.5,
     centeredSlides: true,
@@ -16,6 +19,8 @@ export class ReportePage implements OnInit {
    
   }
   ngOnInit() {
+    this.reading = JSON.parse(this.actRoute.snapshot.paramMap.get('id'));
+    console.log(this.reading);
   }
 
 }

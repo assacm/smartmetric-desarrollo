@@ -9,6 +9,7 @@ import { AlertController } from '@ionic/angular';
 import { AnomaliasService } from '../servicios/anomalias.service';
 import { UsersService } from '../servicios/users.service';
 import { EmployeService} from '../servicios/employe.service';
+import {ProductsService} from '../servicios/products.service'
 @Component({
   selector: 'app-log-in',
   templateUrl: './log-in.page.html',
@@ -26,7 +27,8 @@ export class LogInPage implements OnInit {
     private loginService: LoginServiceService,
     private anomalias: AnomaliasService,
     private users: UsersService,
-    private employe: EmployeService) {
+    private employe: EmployeService,
+    private products: ProductsService) {
     this.formularLogin = this.fb.group({
       "user": new FormControl("",Validators.required),
       "password": new FormControl("",Validators.compose([Validators.required,Validators.minLength(8)]) )
@@ -34,7 +36,7 @@ export class LogInPage implements OnInit {
   }
 
   ngOnInit() {
-
+     localStorage.clear();
   }
 
   async login() {
@@ -54,17 +56,18 @@ this.alert('Alerta', 'Datos incompletos')
         console.log(res['success']['token']);
         localStorage.setItem('token',res['success']['token']);
         this.token= localStorage.getItem('token');
-        //pendientes
+
         this.employe.employeInfo(jsonLogin.login, this.token).subscribe(
           res => { 
-            this.users.users(this.token,res['id']).subscribe( 
-              res =>{
-                console.log(res)
-                localStorage.setItem('users', JSON.stringify(res))
+            this.products.products(this.token,res['id']).subscribe( 
+              res =>{              
+    
+                localStorage.setItem('products', JSON.stringify(res))
               });
             })
-        //anomalías
+        
         this.anomalias.getAnomalias(this.token).subscribe( res =>{
+         
         localStorage.setItem('anomalies', JSON.stringify(res));
         })
       
@@ -91,4 +94,10 @@ this.alert('Alerta', 'Datos incompletos')
   }
 }
 
-  
+  /*
+  this.users.users(this.token,res['id']).subscribe( 
+              res =>{
+                console.log(res.data)
+                localStorage.setItem('users', JSON.stringify(res))
+              });
+  */ 

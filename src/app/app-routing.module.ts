@@ -36,7 +36,7 @@ const routes: Routes = [
     loadChildren: () => import('./capturar/capturar.module').then( m => m.CapturarPageModule)
   },
   {
-    path: 'reporte',
+    path: 'reporte/:id',
     loadChildren: () => import('./reporte/reporte.module').then( m => m.ReportePageModule)
   },
   {

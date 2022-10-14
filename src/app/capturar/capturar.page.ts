@@ -1,31 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormArray, Validators, FormBuilder, FormControl, RequiredValidator } from '@angular/forms';
-import { of } from 'rxjs';
 import { AlertController } from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
-import { AnomaliasService } from '../servicios/anomalias.service';
-import { UsersService } from '../servicios/users.service';
+import { IProducts,Datum, Client, IReading, IReadings } from '../interfaces';
+
 @Component({
   selector: 'app-capturar',
   templateUrl: './capturar.page.html',
   styleUrls: ['./capturar.page.scss'],
 })
 export class CapturarPage implements OnInit {
-  token:any = localStorage.getItem('token');
   captureID:string= "ID1233"
   id: any;
-  name: string;
-  measurer: string;
-  addres: string;
-  month: string;
-  users: any; 
-  last:string = "3456788" //reading
+  measurer: string;  
   current:string //reading
-  confirm:string 
-  details = JSON.parse(localStorage.getItem('anomalies')); //asignamos anomalias de local storage
+  confirm:string //reading
+  details = JSON.parse(localStorage.getItem('anomalies')); 
+  products = JSON.parse(localStorage.getItem('products'));
+  client : Datum;
+
+  employeeID:string;
+  productID:string;
   anomalies:string[] = [] //anomalías seleccionadas
+  latlong:string
   date = new Date();
+  
+  readings: any = [];
+  example:any = [];
+  reading:IReading;
+
   option={
     slidesPerView:1.5,
     centeredSlides: true,
@@ -35,50 +37,48 @@ export class CapturarPage implements OnInit {
   constructor(
     private alertController: AlertController, 
     private router: Router, 
-    private http: HttpClient,
-    private activatedRoute: ActivatedRoute,
-    private usersService : UsersService
+    private activatedRoute: ActivatedRoute
     ) { }
 
   ngOnInit() {
-    /* this.id = this.activatedRoute.snapshot.paramMap.get('id');
-     console.log('id ', this.id)
-     this.usersService.users( this.token).subscribe(res=>{
-      console.log("res", res)
-      this.users= res;
-      console.log('id ', this.id)
-      let i:number= 0;
-      while(this.users[i] != this.id){
-       
-        if(this.users[i].ref == this.id){
-          console.log('es igual')
-          this.name= this.users[i].name;
-          this.measurer= this.users[i].measurer;
-          this.addres= this.users[i].address;
-          this.month= this.users[i].month;
-          break;      
-        }
-        i++;
-        
-        console.log(i)
+    this.id = this.activatedRoute.snapshot.paramMap.get('id');
+    let i = this.id - 1;
+    this.employeeID=this.products[0].employee;
+    this.productID=this.id;
+    console.log(this.products[0].data[i])
+    this.client = {
+      id: this.id,
+      label: this.products[0].data[i].label,
+      address: this.products[0].data[i].address,
+      last_measure:this.products[0].data[i].last_measure,
+      client :       {
+        rowid: this.products[0].data[i].client.rowid,
+        name:  this.products[0].data[i].client.name
       }
-      
-  
-    }); */
+    } 
   }
   
   validation(){
-    
-    if (this.current == '' || this.confirm=='') {
+    this.latlong=this.location();
+
+    if (this.current == '' || this.confirm=='' || this.current != '' || this.confirm=='' || this.current == '' || this.confirm!='') {
       this.alert('Alerta', 'Debe llenar los campos')
      }
      else{      
         if(this.current != this.confirm){
            this.alert('Alerta','La lectura ingresada no coincide')
          }else{
-           this.alert('Finalizado', 'Captura realizada con éxito')
+             
+             this.pushReadings(this.reading);
+             this.pendingsUpdate();
+             
+             this.alert('Finalizado', 'Captura realizada con éxito')
+
            }
       }
+
+      this.current='';
+      this.confirm='';
     
   }
       
@@ -110,11 +110,22 @@ export class CapturarPage implements OnInit {
     this.anomalies= str.map(str => {
       return Number(str);
     });
-
-     console.log(this.anomalies);
-     this.pushReading();
+    
+    return this.anomalies
   }
+  location(){
+     let location:string;
+     let lat:any;
+     let lon:any;
+    navigator.geolocation.getCurrentPosition((position) => { 
+      console.log("Got position", position.coords);
+      lat = position.coords.latitude.toString(); 
+      lon = position.coords.longitude.toString();
+      location = lat+', '+lon
 
+    });
+      return location
+  }
   pushReading(){
      let lat:any;
      let lon:any;
@@ -136,8 +147,48 @@ export class CapturarPage implements OnInit {
     }
      */
   }
+  
+  getReading(employee:string,product:string,hydrometer:string,latlong:string,anomaly:string[],date:number){
+    let reading = {
+      employee_id : employee,
+      product_id : product,
+      hydrometer  : hydrometer,
+      date        : date,
+      latlong : latlong,
+      anomaly : anomaly
+     }
 
-  pushReadings(){}
+     return reading
+  }
+  pushReadings(reading: IReading){
+ 
+      this.readings.push(reading);
+
+      localStorage.setItem('readings', JSON.stringify(this.readings));
+      
+      console.log(this.reading);
+  }
+
+  pendingsUpdate(){
+     
+    for( let product of this.products[0].data){
+          if(product.id != this.id){
+            this.example.push(product)
+          }
+            
+    }
+    this.products[0].data = []
+    this.products[0].data= this.example
+    localStorage.setItem('products', JSON.stringify(this.products))
+     localStorage.setItem('example', JSON.stringify(this.products[0].data))
+  }
+  
+  report(){
+    this.latlong = this.location();
+    this.reading = this.getReading(this.employeeID,this.productID,this.current,this.latlong,this.anomalies, this.date.getDate())
+    this.router.navigate(['/reporte', JSON.stringify(this.reading)]);
+  }
+
 }
 
  /* 
@@ -149,3 +200,6 @@ export class CapturarPage implements OnInit {
       photos (string, optional): photos in base64 ,
       anomaly (integer, optional): fk_anomaly from smartmetric_anomalys ,
       description (string, optional): anomaly description*/
+
+
+ 
