@@ -13,6 +13,12 @@ export class AppComponent {
     { title: 'Ayuda', url: '/ayuda', icon: 'help-circle' },
     { title: 'Cerrar sesión', url: '/log-in', icon: 'log-out' },
   ];
- 
-  constructor() {}
+  public local = JSON.parse(localStorage.getItem('employee'));
+  public employee; 
+  constructor() {
+     if(this.local){
+      this.employee= this.local.firstname+' '+ this.local.lastname
+     }
+
+  }
 }

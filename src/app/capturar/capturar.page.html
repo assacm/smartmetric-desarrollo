@@ -12,27 +12,27 @@
    <div class="contenedor-datos"> 
       <div class="cajita">
               <div class="uno"><ion-label>ID</ion-label></div>
-            <div class="dos"><ion-label>{{client?.id}}</ion-label></div>
+            <div class="dos"><ion-label>{{client.id}}</ion-label></div>
       </div>
       <div class="cajita">
             <div class="uno" ><ion-label>Nombre</ion-label></div>
-            <div class="dos"><ion-label>{{client?.client.name}}</ion-label></div>
+            <div class="dos"><ion-label>{{client.client.name}}</ion-label></div>
       </div>
       <div class="cajita">
                   <div class="uno"> <ion-label style="font-weight:600;">Dirección</ion-label> </div>
                   <div class="dos">
-                     <ion-label>{{client?.address}}</ion-label><br>
+                     <ion-label>{{client.address}}</ion-label><br>
                   </div>    
       </div>        
       <div class="cajita">
                 <div class="uno"><ion-label>Lectura anterior</ion-label></div>
-                <div class="dos"> <ion-label>{{client?.last_measure}}</ion-label></div>
+                <div class="dos"> <ion-label>{{client.last_measure}}</ion-label></div>
       </div>  
-      <div  class="captura">
+      <div [formGroup]="fgReading"  class="captura">
                 <ion-label>Ingresar lectura</ion-label>
-                <ion-input [(ngModel)]="current" type="password"></ion-input>
+                <ion-input formControlName="current" type="password"></ion-input>
                 <ion-label>Confirmar lectura</ion-label>
-                <ion-input [(ngModel)]="confirm" type="password"></ion-input>
+                <ion-input formControlName="confirm" type="password"></ion-input>
       </div>
       <div class="anomalias">
         <ion-list>
@@ -41,11 +41,9 @@
               multiple="true"
               placeholder="Seleccione anomalía"
               (ionChange)="handleChange($event)"
-              (ionCancel)="pushLog('ionCancel fired')"
-              (ionDismiss)="pushLog('ionDismiss fired')"
               
             >
-              <ion-select-option *ngFor="let anomaly of details" value="{{anomaly?.rowid}}">{{anomaly?.label}}</ion-select-option>
+              <ion-select-option *ngFor="let anomaly of details" value="{{anomaly?.rowid}}">{{anomaly.label}}</ion-select-option>
             </ion-select>
           </ion-item>
         </ion-list>

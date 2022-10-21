@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoginServiceService } from '../servicios/login-service.service';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { concatMap, tap} from 'rxjs/operators';
 import { FormGroup, FormArray, Validators, FormBuilder, FormControl, RequiredValidator } from '@angular/forms';
-import { of } from 'rxjs';
 import { AlertController } from '@ionic/angular';
 import { AnomaliasService } from '../servicios/anomalias.service';
-import { UsersService } from '../servicios/users.service';
 import { EmployeService} from '../servicios/employe.service';
-import {ProductsService} from '../servicios/products.service'
+import {ProductsService} from '../servicios/products.service';
+import { LoadingController } from '@ionic/angular';
+
 @Component({
   selector: 'app-log-in',
   templateUrl: './log-in.page.html',
@@ -26,9 +26,9 @@ export class LogInPage implements OnInit {
     private activatedRoute: ActivatedRoute, 
     private loginService: LoginServiceService,
     private anomalias: AnomaliasService,
-    private users: UsersService,
     private employe: EmployeService,
-    private products: ProductsService) {
+    private products: ProductsService,
+    private loadingCtrl: LoadingController) {
     this.formularLogin = this.fb.group({
       "user": new FormControl("",Validators.required),
       "password": new FormControl("",Validators.compose([Validators.required,Validators.minLength(8)]) )
@@ -47,38 +47,31 @@ export class LogInPage implements OnInit {
     }
 
 
-    if (this.formularLogin.invalid) {
-      
-this.alert('Alerta', 'Datos incompletos')
+    if (this.formularLogin.invalid) {      
+      this.alert('Alerta', 'Datos incompletos')
     }
     else{
-      this.loginService.login(jsonLogin).subscribe( res =>{
-        console.log(res['success']['token']);
-        localStorage.setItem('token',res['success']['token']);
-        this.token= localStorage.getItem('token');
+      this.showLoading();
 
-        this.employe.employeInfo(jsonLogin.login, this.token).subscribe(
-          res => { 
-            this.products.products(this.token,res['id']).subscribe( 
-              res =>{              
-    
-                localStorage.setItem('products', JSON.stringify(res))
-              });
-            })
-        
-        this.anomalias.getAnomalias(this.token).subscribe( res =>{
-         
-        localStorage.setItem('anomalies', JSON.stringify(res));
-        })
-      
+      this.loginService.login(jsonLogin).pipe(
+        tap( post => {this.token=post['success']['token'];
+        localStorage.setItem('token', this.token)}),
+        concatMap( employee => this.employe.employeInfo(jsonLogin.login, this.token)),
+        tap( resp => localStorage.setItem('employee', JSON.stringify(resp))),
+        concatMap( products => this.products.products(this.token, products.id)),
+        tap( resp => localStorage.setItem('products', JSON.stringify(resp[0].data))),
+        concatMap( anomalies => this.anomalias.getAnomalias(this.token)),
+        tap( resp =>localStorage.setItem('anomalies', JSON.stringify(resp))),
+        tap(res => this.loadingCtrl.dismiss())
+       ).subscribe(() => {      
         this.router.navigate(['/pendientes']);
+        }, (error) => {
+        console.log(error)
+        this.loadingCtrl.dismiss();
 
-    },(error)=>{
-       console.log(error)
-       this.alert('Alerta','Credenciales incorrectas')
-
-      // if(error.status){enviar alerta correspondiente al error}
-    })
+        this.alert('Alerta','Credenciales incorrectas')
+      })
+      
     }
     this.formularLogin.reset();
   }
@@ -92,12 +85,70 @@ this.alert('Alerta', 'Datos incompletos')
 
     await alert.present();
   }
+  async showLoading() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Iniciando sesión...',
+    });
+
+    loading.present();
+  }
 }
 
-  /*
-  this.users.users(this.token,res['id']).subscribe( 
-              res =>{
-                console.log(res.data)
-                localStorage.setItem('users', JSON.stringify(res))
+
+/*
+this.loginService.login(jsonLogin).subscribe( res =>{
+        console.log(res['success']['token']);
+        localStorage.setItem('token',res['success']['token']);
+        this.token= localStorage.getItem('token');
+
+        this.employe.employeInfo(jsonLogin.login, this.token).subscribe(
+          res => { 
+            this.products.products(this.token,res['id']).subscribe( 
+              res =>{              
+    
+                localStorage.setItem('products', JSON.stringify(res))
+
+                this.router.navigate(['/pendientes']);
+
               });
-  */ 
+            })
+        
+        this.anomalias.getAnomalias(this.token).subscribe( res =>{
+         
+        localStorage.setItem('anomalies', JSON.stringify(res));
+        })
+      
+
+    },(error)=>{
+       console.log(error)
+       this.alert('Alerta','Credenciales incorrectas')
+
+      // if(error.status){enviar alerta correspondiente al error}
+    })
+
+
+
+*/
+
+/*() => {
+
+      // Here you are sure that the send has shared the data sucessFully
+
+    }, (error) => {
+
+    } 
+    {
+      next(x) {
+        console.log(x);
+      },
+      error(err) {
+        //this.alert('Alerta','Credenciales incorrectas');
+        console.error('something wrong occurred: ' + err);
+      }, 
+      complete() {
+        console.log('done');
+       // this.router.navigate(['/pendientes']);
+      },
+    }
+    
+    */

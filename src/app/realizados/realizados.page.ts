@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./realizados.page.scss'],
 })
 export class RealizadosPage implements OnInit {
-
+  
+   completed = JSON.parse(localStorage.getItem('completed'));
   constructor() { }
 
   ngOnInit() {
+
   }
 
 }
