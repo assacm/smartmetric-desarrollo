@@ -20,8 +20,8 @@
   <ion-list>  
     
       
-       <ion-card  [routerLink]="['/capturar', client.id]" *ngFor="let client of products">
-        <ion-card-subtitle id="id_user">ID {{client?.id}}</ion-card-subtitle>
+       <ion-card  [routerLink]="['/capturar', i]" *ngFor="let client of products; let i = index">
+        <ion-card-subtitle id="id_user">ID {{client.id}}</ion-card-subtitle>
         <ion-card-header>
               
               <div class="cajita">

@@ -9,5 +9,40 @@
     </ion-header>
 
 <ion-content>
-<ion-button [routerLink]="['/ver-realizado']"> Ver</ion-button> 
+
+  <div class="noReading" *ngIf="!completed">
+    <ion-label>No hay lecturas completadas</ion-label>
+  </div>
+<ion-list>  
+    
+  <div *ngIf="completed">    
+   <ion-card  [routerLink]="['/ver-realizado']"*ngFor="let client of completed; let i = index">
+    <ion-card-subtitle id="id_user">ID {{client.id}}</ion-card-subtitle>
+     <ion-card-header>
+         
+         <div class="cajita">
+           <div class="uno">
+             <ion-card-subtitle>Dirección</ion-card-subtitle>
+             <ion-card-title>{{client.address}}</ion-card-title></div>
+           <div class="dos">
+             <ion-card-subtitle>Nombre</ion-card-subtitle>
+           <ion-card-title>{{client.client.name}}</ion-card-title>
+           </div>
+         </div>
+         <div class="cajita">
+           <div class="uno">
+             <ion-card-subtitle>Lote</ion-card-subtitle>
+             <ion-card-title>{{client.label}}</ion-card-title>
+           </div>
+           <div class="dos">
+             <ion-card-subtitle>Mes de lectura</ion-card-subtitle>
+             <ion-card-title>No registrado</ion-card-title>
+           </div>
+         </div> 
+   </ion-card-header>        
+  </ion-card>
+ </div>
+ 
+</ion-list>
+
 </ion-content>

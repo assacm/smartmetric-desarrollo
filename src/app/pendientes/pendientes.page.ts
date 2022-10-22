@@ -1,32 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-pendientes',
   templateUrl: './pendientes.page.html',
   styleUrls: ['./pendientes.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PendientesPage implements OnInit {
-
-    products;
-
-  constructor(){ 
-    this.products = JSON.parse(localStorage.getItem('products'));
-  }
-
-  ngOnInit(){ 
-
+export class PendientesPage implements OnInit, AfterViewInit {
+  //products=JSON.parse(localStorage.getItem('products'));
+   products;
+  constructor(private cdr : ChangeDetectorRef){ 
     
   }
 
-  /*getUsers(){
-    return this.http
-    .get("assets/files/route.json")
-    .pipe(
-      map((res:any) =>{
-        return res.product;
-      })
-    )
-  } */
-  
+  ngOnInit(){ 
+    this.products=JSON.parse(localStorage.getItem('products'));
+    console.log(this.products)
+  }
+  ngAfterViewInit(){
+   // this.local.subscribe(res => {
+   //   this.products = res
+   //   this.cdr.markForCheck()})
+    
+  }
   
 }

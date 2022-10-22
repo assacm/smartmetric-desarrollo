@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoginServiceService } from '../servicios/login-service.service';
 import { Router } from '@angular/router';
-import { concatMap, map , tap} from 'rxjs/operators';
+import { concatMap, tap} from 'rxjs/operators';
 import { FormGroup, FormArray, Validators, FormBuilder, FormControl, RequiredValidator } from '@angular/forms';
-import { of } from 'rxjs';
 import { AlertController } from '@ionic/angular';
 import { AnomaliasService } from '../servicios/anomalias.service';
-import { UsersService } from '../servicios/users.service';
 import { EmployeService} from '../servicios/employe.service';
-import {ProductsService} from '../servicios/products.service'
+import {ProductsService} from '../servicios/products.service';
+import { LoadingController } from '@ionic/angular';
+
 @Component({
   selector: 'app-log-in',
   templateUrl: './log-in.page.html',
@@ -26,9 +26,9 @@ export class LogInPage implements OnInit {
     private activatedRoute: ActivatedRoute, 
     private loginService: LoginServiceService,
     private anomalias: AnomaliasService,
-    private users: UsersService,
     private employe: EmployeService,
-    private products: ProductsService) {
+    private products: ProductsService,
+    private loadingCtrl: LoadingController) {
     this.formularLogin = this.fb.group({
       "user": new FormControl("",Validators.required),
       "password": new FormControl("",Validators.compose([Validators.required,Validators.minLength(8)]) )
@@ -51,7 +51,8 @@ export class LogInPage implements OnInit {
       this.alert('Alerta', 'Datos incompletos')
     }
     else{
-      
+      this.showLoading();
+
       this.loginService.login(jsonLogin).pipe(
         tap( post => {this.token=post['success']['token'];
         localStorage.setItem('token', this.token)}),
@@ -60,12 +61,14 @@ export class LogInPage implements OnInit {
         concatMap( products => this.products.products(this.token, products.id)),
         tap( resp => localStorage.setItem('products', JSON.stringify(resp[0].data))),
         concatMap( anomalies => this.anomalias.getAnomalias(this.token)),
-        tap( resp =>localStorage.setItem('anomalies', JSON.stringify(resp)))
-       ).subscribe(() => {
-        console.log('TODO BIEN')
+        tap( resp =>localStorage.setItem('anomalies', JSON.stringify(resp))),
+        tap(res => this.loadingCtrl.dismiss())
+       ).subscribe(() => {      
         this.router.navigate(['/pendientes']);
         }, (error) => {
         console.log(error)
+        this.loadingCtrl.dismiss();
+
         this.alert('Alerta','Credenciales incorrectas')
       })
       
@@ -81,6 +84,13 @@ export class LogInPage implements OnInit {
     });
 
     await alert.present();
+  }
+  async showLoading() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Iniciando sesión...',
+    });
+
+    loading.present();
   }
 }
 
