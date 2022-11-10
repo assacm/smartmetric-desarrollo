@@ -16,7 +16,7 @@
 <ion-list>  
     
   <div *ngIf="completed">    
-   <ion-card  [routerLink]="['/ver-realizado']"*ngFor="let client of completed; let i = index">
+   <ion-card  [routerLink]="['/ver-realizado', client.id]" *ngFor="let client of completed; let i = index">
     <ion-card-subtitle id="id_user">ID {{client.id}}</ion-card-subtitle>
      <ion-card-header>
          
@@ -44,5 +44,7 @@
  </div>
  
 </ion-list>
-
+ 
+  
+   
 </ion-content>

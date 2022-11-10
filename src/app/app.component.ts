@@ -11,7 +11,6 @@ export class AppComponent {
     { title: 'Realizados', url: '/realizados', icon: 'checkmark-circle' },
     { title: 'Estadística', url: '/estadistica', icon: 'bar-chart' },
     { title: 'Ayuda', url: '/ayuda', icon: 'help-circle' },
-    { title: 'Cerrar sesión', url: '/log-in', icon: 'log-out' },
   ];
   public local = JSON.parse(localStorage.getItem('employee'));
   public employee; 
@@ -20,5 +19,9 @@ export class AppComponent {
       this.employee= this.local.firstname+' '+ this.local.lastname
      }
 
+  }
+
+  logOut(){
+    localStorage.clear();
   }
 }

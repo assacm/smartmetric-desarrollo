@@ -7,7 +7,6 @@
 </ion-toolbar>
 
 <ion-content>
-      <div class="idcaptura"><ion-label>{{captureID}}</ion-label></div>
         
    <div class="contenedor-datos"> 
       <div class="cajita">
@@ -19,9 +18,9 @@
             <div class="dos"><ion-label>{{client.client.name}}</ion-label></div>
       </div>
       <div class="cajita">
-                  <div class="uno"> <ion-label style="font-weight:600;">Dirección</ion-label> </div>
+                  <div class="uno"> <ion-label>Dirección</ion-label> </div>
                   <div class="dos">
-                     <ion-label>{{client.address}}</ion-label><br>
+                     <ion-label>{{client.address}}</ion-label>
                   </div>    
       </div>        
       <div class="cajita">
@@ -43,7 +42,9 @@
               (ionChange)="handleChange($event)"
               
             >
-              <ion-select-option *ngFor="let anomaly of details" value="{{anomaly?.rowid}}">{{anomaly.label}}</ion-select-option>
+            <!--               <ion-select-option *ngFor="let anomaly of details" value="{{anomaly.rowid}}">{{anomaly.label}}</ion-select-option>
+ -->
+              <ion-select-option *ngFor="let anomaly of details" [value]="anomaly">{{anomaly.label}}</ion-select-option>
             </ion-select>
           </ion-item>
         </ion-list>

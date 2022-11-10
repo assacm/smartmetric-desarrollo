@@ -7,7 +7,6 @@
 </ion-toolbar>
 
 <ion-content>
-  <ion-label class="idcaptura">#123123{{idCaptura}}</ion-label>
 
   <div class="galeria">
 
@@ -27,63 +26,39 @@
 
   </div>
 
-  <div class="contenedor-datos">
+  <div class="contenedor-datos"> 
     <div class="cajita">
-      <div class="uno">
-        <ion-label>ID</ion-label>
-      </div>
-      <div class="dos">
-        <ion-label>{{ID}}</ion-label>
-      </div>
+      <div class="uno"><ion-label>ID</ion-label></div>
+      <div class="dos"><ion-label>{{currentReading.id}}</ion-label></div>
     </div>
     <div class="cajita">
-      <div class="uno">
-        <ion-label>Nombre</ion-label>
-      </div>
-      <div class="dos">
-        <ion-label>{{nombre}}</ion-label>
-      </div>
+      <div class="uno"><ion-label>Nombre</ion-label></div>
+      <div class="dos"><ion-label>{{currentReading.name}}</ion-label></div>
     </div>
     <div class="cajita">
-      <div class="uno">
-        <ion-label>Captura</ion-label>
-      </div>
-      <div class="dos">
-        <ion-label>{{calle}} #{{numero}} {{Colonia}} {{fecha}} {{hora}}</ion-label>
-      </div>
+      <div class="uno"><ion-label>Lote</ion-label></div>
+      <div class="dos"><ion-label>{{currentReading.label}}</ion-label></div>
     </div>
     <div class="cajita">
-      <div class="uno">
-        <ion-label>Lectura</ion-label>
-      </div>
-      <div class="dos">
-        <ion-label>{{lectura}}</ion-label>
-      </div>
+      <div class="uno"><ion-label>Dirección</ion-label></div>
+      <div class="dos"><ion-label>{{currentReading.address}}</ion-label></div>
     </div>
     <div class="cajita">
-      <div class="uno">
-        <ion-label>Lect. Anterior</ion-label>
-      </div>
-      <div class="dos">
-        <ion-label>{{lecAnterior}}</ion-label>
-      </div>
+      <div class="uno"><ion-label>Fecha</ion-label></div>
+      <div class="dos"><ion-label>{{currentReading.date}}</ion-label></div>
     </div>
     <div class="cajita">
-      <div class="uno">
-        <ion-label>Consumo</ion-label>
-      </div>
-      <div class="dos">
-        <ion-label>{{consumo}}</ion-label>
-      </div>
+      <div class="uno"><ion-label>Anomalías</ion-label></div>
+      <div class="dos"><ion-label *ngFor="let anomaly of currentReading.anomalies">{{anomaly}}  </ion-label></div>
     </div>
     <div class="cajita">
-      <div class="uno">
-        <ion-label>Total</ion-label>
-      </div>
-      <div class="dos">
-        <ion-label>{{total}}</ion-label>
-      </div>
+      <div class="uno"><ion-label>Lectura Anterior</ion-label></div>
+      <div class="dos"><ion-label>{{currentReading.last_measure}}</ion-label></div>
     </div>
+    <div class="cajita">
+      <div class="uno"><ion-label>Lectura Actual</ion-label></div>
+      <div class="dos"><ion-label>{{currentReading.current}}</ion-label></div>
+    </div> 
   </div>
 
   <!--<div class="imprimir">

@@ -15,6 +15,7 @@ import {AnomaliasService} from '../app/servicios/anomalias.service'
 import { EmployeService } from './servicios/employe.service';
 import { ProductsService } from './servicios/products.service';
 import{ environment} from '../environments/environment'
+import { StorageService } from './servicios/storage.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +27,7 @@ import{ environment} from '../environments/environment'
     AnomaliasService,
     EmployeService,
     ProductsService,
+    StorageService,
   { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
