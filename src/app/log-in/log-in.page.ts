@@ -36,7 +36,9 @@ export class LogInPage implements OnInit {
   }
 
   ngOnInit() {
-     localStorage.clear();
+    // this.token = localStorage.getItem('token');
+    // if(this.token){ console.log(this.token); this.router.navigate(['/pendientes'])}
+    
   }
 
   async login() {

@@ -8,8 +8,8 @@ import { IReading } from '../interfaces';
   styleUrls: ['./reporte.page.scss'],
 })
 export class ReportePage implements OnInit {
-
-  reading : IReading;
+  currentReading:any;
+  date = new Date();
   constructor(private actRoute : ActivatedRoute) { }
   option={
     slidesPerView:1.5,
@@ -19,8 +19,9 @@ export class ReportePage implements OnInit {
    
   }
   ngOnInit() {
-    this.reading = JSON.parse(this.actRoute.snapshot.paramMap.get('id'));
-    console.log(this.reading);
+    this.currentReading = JSON.parse(this.actRoute.snapshot.paramMap.get('id'));
+    this.date.getDate;
+    console.log(this.currentReading);
   }
 
 }

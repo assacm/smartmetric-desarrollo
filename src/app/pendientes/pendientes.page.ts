@@ -1,5 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { StorageService } from '../servicios/storage.service';
 
 @Component({
   selector: 'app-pendientes',
@@ -10,7 +11,7 @@ import { Observable } from 'rxjs';
 export class PendientesPage implements OnInit, AfterViewInit {
   //products=JSON.parse(localStorage.getItem('products'));
    products;
-  constructor(private cdr : ChangeDetectorRef){ 
+  constructor(private cdr : ChangeDetectorRef, private updateStrg : StorageService){ 
     
   }
 
@@ -19,10 +20,15 @@ export class PendientesPage implements OnInit, AfterViewInit {
     console.log(this.products)
   }
   ngAfterViewInit(){
-   // this.local.subscribe(res => {
-   //   this.products = res
-   //   this.cdr.markForCheck()})
-    
+  /*  this.updateStrg.getUpdate().subscribe(res => {
+      console.log(res.text)
+      this.products = res.text;
+    }) */
+    this.updateStrg.getProducts().subscribe(res => {
+      console.log(res.text)
+      this.products = res.text;
+    })
+
   }
   
 }
