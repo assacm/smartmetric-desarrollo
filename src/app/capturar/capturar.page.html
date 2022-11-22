@@ -55,7 +55,7 @@
         
         <div class="foto">
           <ion-label>Capturar</ion-label><br>
-         <ion-button size="large"><ion-icon name="camera-outline"></ion-icon></ion-button>  
+         <ion-button size="large" (click)="takePicture()"><ion-icon name="camera-outline"></ion-icon></ion-button>  
         </div>
        
         <div class="galeria">
@@ -63,7 +63,7 @@
             <ion-slides [options]="option" class="ion-margin-top">
                <ion-slide>
                 <ion-card>
-                  <img src="/assets/logos/smartmetric-original.png">
+                  <img *ngIf="image" [src]="image" alt="image">
                 </ion-card>
                </ion-slide>
                <ion-slide>

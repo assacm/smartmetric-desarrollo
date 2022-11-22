@@ -6,6 +6,8 @@ import { FormGroup, FormArray, Validators, FormBuilder, FormControl, RequiredVal
 import { Observable, of, Subject } from 'rxjs';
 import { StorageService } from '../servicios/storage.service';
 
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+
 @Component({
   selector: 'app-capturar',
   templateUrl: './capturar.page.html',
@@ -40,7 +42,11 @@ export class CapturarPage implements OnInit {
     loop:true,
     spaceBetween:10  
   }
+
+  image: string;  //variable donde almacena la foto
+
   constructor(
+    private camera: Camera,
     private alertController: AlertController, 
     private router: Router, 
     private activatedRoute: ActivatedRoute,
@@ -147,12 +153,25 @@ export class CapturarPage implements OnInit {
     });
     this.alert('Finalizado', 'Captura realizada con éxito')
   }
-  camera(){
-    //codigo para la camara
-    //codigo para arreglo de fotos
-    //hacer push a array de fotos, declarado global, del tipo del codigo que genera las fotos
 
-  }
+    //Codigo para la funcionalidad de la camara
+    takePicture() {
+      const options: CameraOptions = {
+        quality: 30,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE,
+        sourceType: this.camera.PictureSourceType.CAMERA
+      };
+      this.camera.getPicture(options)
+      .then((imageData) =>{
+        this.image = 'data:image/jpeg;base64,' + imageData;
+      }, (err) => {
+        console.log(err);
+      });
+    }
+
+ 
   photos(){
     //de aqui return array photos
 
