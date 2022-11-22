@@ -17,7 +17,11 @@ import { ProductsService } from './servicios/products.service';
 import{ environment} from '../environments/environment'
 import { StorageService } from './servicios/storage.service';
 
+import { UploadService } from './servicios/upload.service';
+
+
 import { Camera } from '@ionic-native/camera/ngx';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +35,7 @@ import { Camera } from '@ionic-native/camera/ngx';
     EmployeService,
     ProductsService,
     StorageService,
+    UploadService,
   { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

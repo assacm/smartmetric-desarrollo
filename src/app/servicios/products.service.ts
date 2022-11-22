@@ -14,7 +14,7 @@ export class ProductsService {
 
   products(token:string, id: number){
    
-    return this.metodos.get(environment.endpoint.users + id, token)
+    return this.metodos.get(environment.endpoint.users + id, token);
   
     }
 

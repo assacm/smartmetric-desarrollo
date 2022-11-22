@@ -11,15 +11,11 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-
       <ion-title size="large">Pendientes</ion-title>
-
     </ion-toolbar>
   </ion-header>
 
-  <ion-list>  
-    
-      
+  <ion-list>     
        <ion-card  [routerLink]="['/capturar', i]" *ngFor="let client of products; let i = index">
         <ion-card-subtitle id="id_user">ID {{client.id}}</ion-card-subtitle>
         <ion-card-header>
@@ -44,12 +40,10 @@
                 </div>
               </div> 
         </ion-card-header>        
-       </ion-card>
-       
-      
+       </ion-card>    
   </ion-list>
-    
-  
+    <div class="button">  <ion-button *ngIf="!products" size="large" (click)="download()">Descargar ruta</ion-button>
+    </div>
 </ion-content>
 
 <!--
