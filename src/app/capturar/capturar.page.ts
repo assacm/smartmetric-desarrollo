@@ -118,13 +118,9 @@ export class CapturarPage implements OnInit {
    let ev = e.detail.value
    this.descAnomalies = ev.map( res => res.label) //arreglo con la desc
    this.anomalies= ev.map( res => {return Number(res.rowid)}) //arreglo con los id
-  
-   console.log(this.descAnomalies)
-   console.log(this.anomalies)
 
   }
   pushReading(employee:string,product:string,hydrometer:string,anomaly:number[], descAnomaly : string[]){
-    //Fri, 04 Nov 2022 20:50:57 GMT
     let reading;
     if(localStorage.getItem('readings')){
       this.readings=JSON.parse(localStorage.getItem('readings'))
@@ -137,7 +133,7 @@ export class CapturarPage implements OnInit {
       employee_id : employee,
       product_id : product,
       hydrometer  : hydrometer,
-      date        : this.date, //checar
+      date        : this.date.toUTCString(),
       latlong : loc,
       anomaly : anomaly,
       description: descAnomaly
@@ -148,6 +144,7 @@ export class CapturarPage implements OnInit {
      localStorage.setItem('readings', JSON.stringify(this.readings));
      console.log(reading)
      this.pendingsUpdate();
+     console.log(this.date);
      this.router.navigate( ['/pendientes']);
      
     });
@@ -212,6 +209,7 @@ export class CapturarPage implements OnInit {
       last_measure:this.products[this.id].last_measure,
       current : this.current,
       anomalies : this.descAnomalies,
+      date : this.date.toUTCString(),
       client :       {
         rowid: this.products[this.id].client.rowid,
         name:  this.products[this.id].client.name
