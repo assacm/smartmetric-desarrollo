@@ -25,3 +25,13 @@ ion-toolbar img{
     box-shadow: 0 0 7px rgba(0,0,0,0.8);
     margin: 20px;
   }
+
+  .icon_content{
+    width: 120px;
+    height: 120px;
+    clip-path: circle();
+    position: relative;
+    z-index: 1;
+    bottom: 70px;
+    left: 10px;
+  }

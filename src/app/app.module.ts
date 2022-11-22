@@ -16,12 +16,19 @@ import { EmployeService } from './servicios/employe.service';
 import { ProductsService } from './servicios/products.service';
 import{ environment} from '../environments/environment'
 import { StorageService } from './servicios/storage.service';
+
 import { UploadService } from './servicios/upload.service';
+
+
+import { Camera } from '@ionic-native/camera/ngx';
+
+
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: 
-  [ HttpMetodosService,
+  [ Camera,
+    HttpMetodosService,
     LoginServiceService,
     UsersService,
     AnomaliasService,
