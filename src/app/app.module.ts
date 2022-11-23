@@ -16,7 +16,7 @@ import { EmployeService } from './servicios/employe.service';
 import { ProductsService } from './servicios/products.service';
 import{ environment} from '../environments/environment'
 import { StorageService } from './servicios/storage.service';
-
+import { UploadService } from './servicios/upload.service';
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
@@ -28,6 +28,7 @@ import { StorageService } from './servicios/storage.service';
     EmployeService,
     ProductsService,
     StorageService,
+    UploadService,
   { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

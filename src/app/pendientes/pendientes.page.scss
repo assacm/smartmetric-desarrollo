@@ -1,3 +1,4 @@
+
 ion-toolbar ion-button{
 
   --background: #fff;
@@ -103,3 +104,23 @@ ion-card-subtitle{
   width: 100px;
   flex-grow: 2;
 }
+
+.button{
+  position: relative;
+  top:40%;
+  left:13%;
+  --border-radius:15px;
+}
+.button ion-button{
+ 
+    --background:#fff;
+    --color:#F66B00;
+    font-family: 'Segoe UI';
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: none;
+    --border-radius:15px;
+    
+}
+
+

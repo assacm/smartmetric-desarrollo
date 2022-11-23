@@ -8,7 +8,8 @@ export const environment = {
   endpoint : { login: 'login',
               anomaly: 'smartmetricapi/getAnomalys',
               employe: 'users/login/',
-              users: 'smartmetricapi/employe/'
+              users: 'smartmetricapi/employe/',
+              readings :'smartmetricapi/readingss'
             }
 };
 

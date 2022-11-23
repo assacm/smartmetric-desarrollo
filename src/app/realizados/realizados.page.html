@@ -45,6 +45,10 @@
  
 </ion-list>
  
-  
+<ion-fab *ngIf="completed"  slot="fixed" vertical="bottom" horizontal="center">
+  <ion-fab-button (click)="upload()">
+    <ion-icon size="large" name="cloud-upload-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
    
 </ion-content>
