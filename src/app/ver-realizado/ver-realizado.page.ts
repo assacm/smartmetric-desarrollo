@@ -28,7 +28,7 @@ export class VerRealizadoPage implements OnInit {
       last_measure:this.selected().last_measure,
       current : this.readingInfo().hydrometer,
       anomalies : this.readingInfo().description,
-      date: this.readingInfo().date,
+      date: this.dateSpanish(this.readingInfo().date),
       name:this.selected().client.name    
    }
   }
@@ -44,6 +44,40 @@ export class VerRealizadoPage implements OnInit {
       
       if(read.product_id == this.id){  return read }
     }
+  }
+  dateSpanish(fecha:string){
+    let date = new Date(fecha) 
+    let day = {
+      1:'Lunes',
+      2:'Martes',
+      3:'Miércoles',
+      4:'Jueves',
+      5:'Viernes',
+      6:'Sábado',
+      0:'Domingo'
+     } 
+     let month = {
+      1:'Enero',
+      2:'Febrero',
+      3:'Marzo',
+      4:'Abril',
+      5:'Mayo',
+      6:'Junio',
+      7:'Julio',
+      8:'Agosto',
+      9:'Septiembre',
+      10:'Octubre',
+      11:'Noviembre',
+      12:'Diciembre'
+    }
+  
+    return `${ day[date.getDay()]}, ${date.getDate()} de ${month[date.getMonth()]} del ${date.getFullYear()}` 
+  }
+  showAnomaly(){
+    if(this.readingInfo().description.length == 0){
+      return false;
+    }
+    return true
   }
 
 }
