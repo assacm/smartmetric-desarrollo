@@ -3,7 +3,6 @@ import { LoadingController } from '@ionic/angular';
 import { Observable, Subject } from 'rxjs';
 import { ProductsService } from '../servicios/products.service';
 import { StorageService } from '../servicios/storage.service';
-
 @Component({
   selector: 'app-pendientes',
   templateUrl: './pendientes.page.html',
@@ -11,50 +10,53 @@ import { StorageService } from '../servicios/storage.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PendientesPage implements OnInit, AfterViewInit {
-  //products=JSON.parse(localStorage.getItem('products'));
-   products;
+   products = [];
    employee = JSON.parse(localStorage.getItem('employee'));
+   reload = new Subject<any>();
 
   constructor(private cdr : ChangeDetectorRef, 
               private updateStrg : StorageService, 
               private productS : ProductsService,
               private loadingCtrl: LoadingController,
-              private update: StorageService){ 
-    
-  }
+              private update: StorageService){}
 
   ngOnInit(){ 
+    console.log('onInit'); 
     this.products=JSON.parse(localStorage.getItem('products'));
-    //console.log(this.products)
+    
   }
   ngAfterViewInit(){
-  /*  this.updateStrg.getUpdate().subscribe(res => {
-      console.log(res.text)
-      this.products = res.text;
-    }) */
+    console.log('AfterViewInit');
     this.updateStrg.getProducts().subscribe(res => {
-      //console.log(res.text)
+      console.log('update storage service');
       this.products = res.text;
-      this.loadingCtrl.dismiss();
+      
+    })
+    this.reload.asObservable().subscribe( res =>{
+      this.products = res;
+      if(this.products){    
+        this.loadingCtrl.dismiss();
+        window.location.reload(); 
+       }
     })
 
-   /* this.getStorage.asObservable().subscribe(
-      x => {console.log('Observer got a next value: ' + x); },
-      err => console.error('Observer got an error: ' + err),
-      () => {console.log('Observer got a complete notification');this.loadingCtrl.dismiss()}
-     ) */
-  
   }
+  showButton(){
+    console.log(this.products)
+    if(!this.products || this.products.length == 0){
+      console.log('no hay products')
+      return true;
+   }
+    return false;
 
+  }
   download(){
    this.showLoading()
-   
+   console.log('1');
    this.productS.products(localStorage.getItem('token'),this.employee.id)
    .subscribe(res =>{
-    console.log(res)
-    this.products = res[0].data;
-    localStorage.setItem('products', JSON.stringify(res[0].data))
-    this.update.updateProducts(JSON.parse(localStorage.getItem('products')));
+    localStorage.setItem('products', JSON.stringify(res[0].data)) ; 
+    this.reload.next(JSON.parse(localStorage.getItem('products'))); 
    });
   }
   async showLoading() {

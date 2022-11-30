@@ -13,7 +13,8 @@
   <div class="noReading" *ngIf="!completed">
     <ion-label>No hay lecturas completadas</ion-label>
   </div>
-<ion-list>  
+<!-- 
+  <ion-list>  
     
   <div *ngIf="completed">    
    <ion-card  [routerLink]="['/ver-realizado', client.id]" *ngFor="let client of completed; let i = index">
@@ -44,7 +45,11 @@
  </div>
  
 </ion-list>
- 
+ -->
+<ion-list  *ngIf="completed">
+  <app-cards-products [client]="client" [routerLink]="['/ver-realizado', client.id]" *ngFor="let client of completed; let i = index"></app-cards-products>
+</ion-list>
+
 <ion-fab *ngIf="completed"  slot="fixed" vertical="bottom" horizontal="center">
   <ion-fab-button (click)="upload()">
     <ion-icon size="large" name="cloud-upload-outline"></ion-icon>

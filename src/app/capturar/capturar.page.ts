@@ -96,7 +96,8 @@ export class CapturarPage implements OnInit {
 
       this.current='';
       this.confirm='';
-    
+      
+      
   }
       
   async alert(header:string,message:string){
@@ -133,7 +134,7 @@ export class CapturarPage implements OnInit {
       employee_id : employee,
       product_id : product,
       hydrometer  : hydrometer,
-      date        : this.date.toUTCString(),
+      date        : this.date.toString(),
       latlong : loc,
       anomaly : anomaly,
       description: descAnomaly
@@ -167,14 +168,6 @@ export class CapturarPage implements OnInit {
         console.log(err);
       });
     }
-
- 
-  photos(){
-    //de aqui return array photos
-
-    //slides si no hay fotos tomadas... que no se muestre?? default fotos smartmetric?
-  }
-
   
   pendingsUpdate(){
     if(localStorage.getItem('completed')){
@@ -191,7 +184,6 @@ export class CapturarPage implements OnInit {
     this.products = []
     this.products = this.example
     localStorage.setItem('products', JSON.stringify(this.products))
-    localStorage.setItem('example', JSON.stringify(this.products))
     localStorage.setItem('completed',JSON.stringify(this.completed))
     this.updateStrg.updateProducts(JSON.parse(localStorage.getItem('products')));
     this.updateStrg.updateCompleted(JSON.parse(localStorage.getItem('completed')));
@@ -209,7 +201,7 @@ export class CapturarPage implements OnInit {
       last_measure:this.products[this.id].last_measure,
       current : this.current,
       anomalies : this.descAnomalies,
-      date : this.date.toUTCString(),
+      date : this.dateSpanish(this.date.toString()),
       client :       {
         rowid: this.products[this.id].client.rowid,
         name:  this.products[this.id].client.name
@@ -217,7 +209,34 @@ export class CapturarPage implements OnInit {
     }
     this.router.navigate(['/reporte', JSON.stringify(currentReading)]);
   } 
-
+  
+  dateSpanish(fecha:string){
+    let date = new Date(fecha)
+    let day = {
+      1:'Lunes',
+      2:'Martes',
+      3:'Miércoles',
+      4:'Jueves',
+      5:'Viernes',
+      6:'Sábado',
+      0:'Domingo'
+     } 
+     let month = {
+      1:'Enero',
+      2:'Febrero',
+      3:'Marzo',
+      4:'Abril',
+      5:'Mayo',
+      6:'Junio',
+      7:'Julio',
+      8:'Agosto',
+      9:'Septiembre',
+      10:'Octubre',
+      11:'Noviembre',
+      12:'Diciembre'
+    }
+    return `${ day[date.getDay()]}, ${date.getDate()} de ${month[date.getMonth()]} del ${date.getFullYear()}` 
+  }
 }
 
  /* 

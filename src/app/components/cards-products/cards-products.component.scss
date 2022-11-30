@@ -1,24 +1,4 @@
-ion-toolbar ion-button{
-
-    --background: #fff;
-    --color: #5B5858;
-    --box-shadow:none;
-    text-transform: none;
-    font-family: 'Segoe UI';
-    --color:#6C7572;
-    font-size: 15px;
-  }
-  ion-toolbar img{
-    height: 37px;
-    width: auto;
-    padding-right: 15px;
-  }
-  .noReading{
-    text-align: center;
-    padding-top: 50%;
-  }
-
-  #id_user{
+#id_user{
     margin-left: 27px;
     margin-top: 15px;
     font-weight: bold;
@@ -67,5 +47,3 @@ ion-toolbar ion-button{
     width: 100px;
     flex-grow: 2;
   }
-
-  

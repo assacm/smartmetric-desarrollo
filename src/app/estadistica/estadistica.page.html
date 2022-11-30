@@ -14,7 +14,7 @@
     <ion-row>
       <ion-col>
        <ion-row><ion-col><ion-label class="tx1">Ruta 001</ion-label></ion-col></ion-row>
-       <ion-row><ion-col><ion-label class="tx2">{{route}}</ion-label></ion-col></ion-row>
+       <ion-row><ion-col><ion-label class="tx2">{{stats.route}}</ion-label></ion-col></ion-row>
       </ion-col>
       <ion-col></ion-col>
     </ion-row>
@@ -25,13 +25,13 @@
   <div class="purple small">
    <ion-grid>
     <ion-row><ion-col><ion-label class="tx1">Pendientes</ion-label></ion-col></ion-row>
-    <ion-row><ion-col><ion-label class="tx2">{{pending}}</ion-label></ion-col></ion-row>
+    <ion-row><ion-col><ion-label class="tx2">{{stats.incomplete}}</ion-label></ion-col></ion-row>
    </ion-grid>
   </div>
   <div class="blue small">
     <ion-grid [fixed]="true">
       <ion-row><ion-col><ion-label class="tx1">Realizados</ion-label></ion-col></ion-row>
-      <ion-row><ion-col><ion-label class="tx2">{{complete}}</ion-label></ion-col></ion-row>
+      <ion-row><ion-col><ion-label class="tx2">{{stats.complete}}</ion-label></ion-col></ion-row>
     </ion-grid>
   </div>
  </div>
@@ -43,7 +43,7 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col><ion-label class="tx2">{{time}} hrs</ion-label></ion-col>
+      <ion-col><ion-label class="tx2">{{stats.time}} hrs</ion-label></ion-col>
     </ion-row>
   </ion-grid> 
  </div>
@@ -54,7 +54,7 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col><ion-label class="tx2">{{currentTime}} hrs</ion-label></ion-col>
+      <ion-col><ion-label class="tx2">{{stats.currentTime}} hrs</ion-label></ion-col>
     </ion-row>
   </ion-grid> 
  </div>
@@ -65,7 +65,7 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col><ion-label class="tx2">{{anomalies}}</ion-label></ion-col>
+      <ion-col><ion-label class="tx2">{{stats.anomalies}}</ion-label></ion-col>
     </ion-row>
   </ion-grid> 
  </div>
