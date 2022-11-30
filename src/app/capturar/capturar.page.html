@@ -62,15 +62,16 @@
          
             <ion-slides [options]="option" class="ion-margin-top">
                <ion-slide>
-                <ion-card>
-                  <img *ngIf="image" [src]="image" alt="image">
+                <ion-card *ngFor="let photo of image[i]; let i = index">
+                  <img *ngIf="image" src="photo" alt="image"> 
                 </ion-card>
                </ion-slide>
-               <ion-slide>
-                <ion-card>
-                  <img src="/assets/logos/figura.png">
-                </ion-card>
-               </ion-slide>
+                 <ion-slide>
+                  <ion-card *ngIf="image">
+                    <img src={{image[0]}}>
+                  </ion-card>
+               </ion-slide>  
+               
 
             </ion-slides>
 

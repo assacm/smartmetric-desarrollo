@@ -43,7 +43,7 @@ export class CapturarPage implements OnInit {
     spaceBetween:10  
   }
 
-  image: string;  //variable donde almacena la foto
+  image: any = [];  //variable donde almacena la foto
 
   constructor(
     private camera: Camera,
@@ -152,7 +152,7 @@ export class CapturarPage implements OnInit {
     this.alert('Finalizado', 'Captura realizada con éxito')
   }
 
-    //Codigo para la funcionalidad de la camara
+    //Codigo para la funcionalidad de la camarav
     takePicture() {
       const options: CameraOptions = {
         quality: 30,
@@ -163,7 +163,9 @@ export class CapturarPage implements OnInit {
       };
       this.camera.getPicture(options)
       .then((imageData) =>{
-        this.image = 'data:image/jpeg;base64,' + imageData;
+        this.image.push('data:image/jpeg;base64,' + imageData);
+        console.log(this.image);
+        
       }, (err) => {
         console.log(err);
       });
