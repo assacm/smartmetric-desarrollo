@@ -59,23 +59,17 @@
         </div>
        
         <div class="galeria">
-         
-            <ion-slides [options]="option" class="ion-margin-top">
-               <ion-slide>
-                <ion-card *ngFor="let photo of image[i]; let i = index">
-                  <img *ngIf="image" src="photo" alt="image"> 
-                </ion-card>
-               </ion-slide>
-                 <ion-slide>
-                  <ion-card *ngIf="image">
-                    <img src={{image[0]}}>
-                  </ion-card>
-               </ion-slide>  
-               
-
-            </ion-slides>
-
-        </div>
+ 
+          <ion-slides [options]="option" class="ion-margin-top">
+             <ion-slide *ngFor="let photo of image">
+              <ion-card >
+                <img *ngIf="image" src="{{photo}}" >
+              </ion-card>
+             </ion-slide>
+      
+          </ion-slides>
+      
+      </div>
         <div class="buttons">
            <ion-button class="visualizar" (click)="report()" size="large">Visualizar</ion-button>
            <ion-button (click)="validation()" size="large">Finalizar</ion-button>
