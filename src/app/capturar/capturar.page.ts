@@ -43,7 +43,9 @@ export class CapturarPage implements OnInit {
     spaceBetween:10  
   }
 
+
   image: string[]=[];  //variable donde almacena la foto
+
 
   constructor(
     private camera: Camera,
@@ -162,7 +164,7 @@ export class CapturarPage implements OnInit {
     //hacer un if(photos.length >=2){ } else{ this.alert('Alerta', 'Se requiere de 2 fotos')}
   }
 
-    //Codigo para la funcionalidad de la camara
+    //Codigo para la funcionalidad de la camarav
     takePicture() {
       const options: CameraOptions = {
         quality: 30,
