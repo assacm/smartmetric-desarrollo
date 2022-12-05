@@ -10,12 +10,12 @@
   <div class="galeria">
          
     <ion-slides [options]="option" class="ion-margin-top">
-       <ion-slide>
-        <ion-card>
-          <img src="/assets/logos/smartmetric-original.png">
+       <ion-slide  *ngFor="let photo of currentReading.images">
+        <ion-card *ngIf="currentReading.images">
+          <img src="{{photo}}">
         </ion-card>
        </ion-slide>
-       <ion-slide>
+       <ion-slide *ngIf="!currentReading.images">
         <ion-card>
           <img src="/assets/logos/figura.png">
         </ion-card>

@@ -43,7 +43,9 @@ export class CapturarPage implements OnInit {
     spaceBetween:10  
   }
 
-  image: any = [];  //variable donde almacena la foto
+
+  image: string[]=[];  //variable donde almacena la foto
+
 
   constructor(
     private camera: Camera,
@@ -90,7 +92,13 @@ export class CapturarPage implements OnInit {
         if(this.current != this.confirm){
            this.alert('Alerta','La lectura ingresada no coincide')
          }else{
-           this.pushReading(this.employeeID,this.productID,this.current,this.anomalies, this.descAnomalies)
+           this.pushReading(
+            this.employeeID,
+            this.productID,
+            this.current,
+            this.anomalies, 
+            this.descAnomalies,
+            this.image)
            }
       }
 
@@ -121,7 +129,7 @@ export class CapturarPage implements OnInit {
    this.anomalies= ev.map( res => {return Number(res.rowid)}) //arreglo con los id
 
   }
-  pushReading(employee:string,product:string,hydrometer:string,anomaly:number[], descAnomaly : string[]){
+  pushReading(employee:string,product:string,hydrometer:string,anomaly:number[], descAnomaly : string[],photos:string[]){
     let reading;
     if(localStorage.getItem('readings')){
       this.readings=JSON.parse(localStorage.getItem('readings'))
@@ -134,8 +142,10 @@ export class CapturarPage implements OnInit {
       employee_id : employee,
       product_id : product,
       hydrometer  : hydrometer,
-      date        : this.date.toString(),
+      date :  `${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()} ${this.date.getHours()}:${this.date.getMinutes()}:${this.date.getSeconds()}`,
+      //date        : this.date.toString(),
       latlong : loc,
+      photos: photos,
       anomaly : anomaly,
       description: descAnomaly
      }
@@ -150,6 +160,8 @@ export class CapturarPage implements OnInit {
      
     });
     this.alert('Finalizado', 'Captura realizada con éxito')
+    //meter el alert antes del navigate
+    //hacer un if(photos.length >=2){ } else{ this.alert('Alerta', 'Se requiere de 2 fotos')}
   }
 
     //Codigo para la funcionalidad de la camarav
@@ -164,8 +176,6 @@ export class CapturarPage implements OnInit {
       this.camera.getPicture(options)
       .then((imageData) =>{
         this.image.push('data:image/jpeg;base64,' + imageData);
-        console.log(this.image);
-        
       }, (err) => {
         console.log(err);
       });
@@ -207,7 +217,8 @@ export class CapturarPage implements OnInit {
       client :       {
         rowid: this.products[this.id].client.rowid,
         name:  this.products[this.id].client.name
-      }
+      },
+      images: this.image
     }
     this.router.navigate(['/reporte', JSON.stringify(currentReading)]);
   } 

@@ -59,11 +59,14 @@ export class LogInPage implements OnInit {
         tap( post => {this.token=post['success']['token'];
         localStorage.setItem('token', this.token)}),
         concatMap( employee => this.employe.employeInfo(jsonLogin.login, this.token)),
-        tap( resp => localStorage.setItem('employee', JSON.stringify(resp))),
+        tap( resp => { if(resp!=undefined) localStorage.setItem('employee', JSON.stringify(resp))}),
         concatMap( products => this.products.products(this.token, products.id)),
-        tap( resp => localStorage.setItem('products', JSON.stringify(resp[0].data))),
+        tap( resp => {
+          if(resp[0].data!==undefined){
+          localStorage.setItem('products', JSON.stringify(resp[0].data))
+        }}),
         concatMap( anomalies => this.anomalias.getAnomalias(this.token)),
-        tap( resp =>localStorage.setItem('anomalies', JSON.stringify(resp))),
+        tap( resp => { if(resp!=undefined) localStorage.setItem('anomalies', JSON.stringify(resp))}),
         tap(res => this.loadingCtrl.dismiss())
        ).subscribe(() => {      
         this.router.navigate(['/pendientes']);

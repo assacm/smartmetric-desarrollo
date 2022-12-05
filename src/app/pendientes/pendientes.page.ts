@@ -3,6 +3,8 @@ import { LoadingController } from '@ionic/angular';
 import { Observable, Subject } from 'rxjs';
 import { ProductsService } from '../servicios/products.service';
 import { StorageService } from '../servicios/storage.service';
+import { AlertController } from '@ionic/angular';
+import { validValue } from '../functions';
 @Component({
   selector: 'app-pendientes',
   templateUrl: './pendientes.page.html',
@@ -10,22 +12,34 @@ import { StorageService } from '../servicios/storage.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PendientesPage implements OnInit, AfterViewInit {
+   storage = {
+    products :JSON.parse(localStorage.getItem('products')),
+    employee :JSON.parse(localStorage.getItem('employee'))
+  }
    products = [];
-   employee = JSON.parse(localStorage.getItem('employee'));
+   employee ;
    reload = new Subject<any>();
 
-  constructor(private cdr : ChangeDetectorRef, 
-              private updateStrg : StorageService, 
+  constructor(private updateStrg : StorageService, 
               private productS : ProductsService,
               private loadingCtrl: LoadingController,
-              private update: StorageService){}
+              private update: StorageService,
+              private alertController: AlertController){}
 
   ngOnInit(){ 
-    console.log('onInit'); 
-    this.products=JSON.parse(localStorage.getItem('products'));
-    
+    console.log('pendientes oninit')
+    console.log(this.storage)
+
+    if(validValue(this.storage.products) != false){
+    this.products= this.storage.products;
+    }
+    if(validValue(this.storage.employee) != false){
+      this.employee= this.storage.employee;
+      }
+
   }
   ngAfterViewInit(){
+    console.log(this.storage)
     console.log('AfterViewInit');
     this.updateStrg.getProducts().subscribe(res => {
       console.log('update storage service');
@@ -33,17 +47,23 @@ export class PendientesPage implements OnInit, AfterViewInit {
       
     })
     this.reload.asObservable().subscribe( res =>{
+      console.log('reload subject')
+      console.log(res)
       this.products = res;
       if(this.products){    
         this.loadingCtrl.dismiss();
         window.location.reload(); 
        }
+      if(res == null){
+        this.loadingCtrl.dismiss();
+        this.alert('Ruta no disponible', 'No se ha encontrado ruta')
+      } 
     })
 
   }
   showButton(){
-    console.log(this.products)
-    if(!this.products || this.products.length == 0){
+ 
+    if(validValue(this.products) == false || this.products.length == 0 ){
       console.log('no hay products')
       return true;
    }
@@ -52,9 +72,9 @@ export class PendientesPage implements OnInit, AfterViewInit {
   }
   download(){
    this.showLoading()
-   console.log('1');
    this.productS.products(localStorage.getItem('token'),this.employee.id)
    .subscribe(res =>{
+    if(res[0].data != undefined)
     localStorage.setItem('products', JSON.stringify(res[0].data)) ; 
     this.reload.next(JSON.parse(localStorage.getItem('products'))); 
    });
@@ -65,5 +85,14 @@ export class PendientesPage implements OnInit, AfterViewInit {
     });
 
     loading.present();
+  }
+  async alert(header:string,message:string){
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['Aceptar'],
+    });
+
+    await alert.present();
   }
 }
