@@ -1,19 +1,16 @@
-ion-toolbar ion-button{
 
-    --background: #fff;
-    --color: #5B5858;
-    --box-shadow:none;
-    text-transform: none;
-    font-family: 'Segoe UI';
-    --color:#6C7572;
-    font-size: 15px;
-}
 ion-toolbar img{
     height: 37px;
     width: auto;
     padding-right: 15px;
 }
-
+ion-container{
+    font-size:16px;
+    
+    //376px
+    //360px
+    //280px
+}
 .container{
     height: 200px;
     width: auto;
@@ -24,6 +21,12 @@ ion-toolbar img{
     font-weight: 600; 
     display: flex;
     padding: 10px;
+    @media screen and (max-width: 390px){
+        font-size:14px;  
+    }
+    @media screen and (max-width: 280px){
+        font-size:10px;  
+    }
 }
 
 .text{
@@ -31,11 +34,13 @@ ion-toolbar img{
     width: 50%;
 }
 .tx1{
-    font-size: 30px;
-
+    //font-size: 30px;
+    font-size: 2em;
 }
 .tx2{
-    font-size: 80px;
+    //font-size: 80px;
+    font-size: 5em;
+   // font-size:10vh;
     position:relative;
     left: 20%;
 }
@@ -50,6 +55,7 @@ ion-toolbar img{
 }
 ion-label{
     display: block;
+   
 }
 
 .small{

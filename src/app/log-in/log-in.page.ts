@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoginServiceService } from '../servicios/login-service.service';
 import { Router } from '@angular/router';
 import { concatMap, tap} from 'rxjs/operators';
 import { FormGroup, FormArray, Validators, FormBuilder, FormControl, RequiredValidator } from '@angular/forms';
-import { AlertController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 import { AnomaliasService } from '../servicios/anomalias.service';
 import { EmployeService} from '../servicios/employe.service';
 import {ProductsService} from '../servicios/products.service';
 import { LoadingController } from '@ionic/angular';
+import { ComponentsModule } from '../components/components.module';
+import { StatsService } from '../servicios/stats.service';
+import { RouteInfoService } from '../servicios/route-info.service';
+import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 
 @Component({
   selector: 'app-log-in',
@@ -17,9 +21,12 @@ import { LoadingController } from '@ionic/angular';
 })
 export class LogInPage implements OnInit {
   formularLogin: FormGroup;
-
   respuesta: any;
   token:any;
+  employeeID:any;
+  eye = 'eye-off-outline';
+  type ='password';
+   
   constructor(private alertController: AlertController, 
     public fb: FormBuilder, 
     private router: Router, 
@@ -28,7 +35,11 @@ export class LogInPage implements OnInit {
     private anomalias: AnomaliasService,
     private employe: EmployeService,
     private products: ProductsService,
-    private loadingCtrl: LoadingController) {
+    private stats: StatsService,
+    private routeInfo: RouteInfoService,
+    private loadingCtrl: LoadingController,
+    private menuCtrl: MenuController,
+    private screenOrientation: ScreenOrientation) {
     this.formularLogin = this.fb.group({
       "user": new FormControl("",Validators.required),
       "password": new FormControl("",Validators.compose([Validators.required,Validators.minLength(8)]) )
@@ -36,11 +47,24 @@ export class LogInPage implements OnInit {
   }
 
   ngOnInit() {
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+
      this.token = localStorage.getItem('token');
      if(this.token){ console.log(this.token); this.router.navigate(['/pendientes'])}
-    
+     this.menuCtrl.enable(false);
   }
+  visible(){
+    
+    if(this.eye =='eye-outline'){
+      this.eye = 'eye-off-outline';
+      this.type='password'
 
+    }else if(this.eye =='eye-off-outline'){
+      this.eye ='eye-outline'
+      this.type='text'
+
+    }
+  }
   async login() {
     var datos = this.formularLogin.value;
     let jsonLogin = {
@@ -48,30 +72,43 @@ export class LogInPage implements OnInit {
       "password": datos.password
     }
 
-
     if (this.formularLogin.invalid) {      
       this.alert('Alerta', 'Datos incompletos')
     }
     else{
       this.showLoading();
-
+      //cargar servicios de ruta y estadísticas
       this.loginService.login(jsonLogin).pipe(
         tap( post => {this.token=post['success']['token'];
         localStorage.setItem('token', this.token)}),
         concatMap( employee => this.employe.employeInfo(jsonLogin.login, this.token)),
         tap( resp => { if(resp!=undefined) localStorage.setItem('employee', JSON.stringify(resp))}),
         concatMap( products => this.products.products(this.token, products.id)),
-        tap( resp => {
+        tap( resp => { 
+         this.employeeID=resp[0].employee
           if(resp[0].data!==undefined){
           localStorage.setItem('products', JSON.stringify(resp[0].data))
-        }}),
+          }}),
         concatMap( anomalies => this.anomalias.getAnomalias(this.token)),
         tap( resp => { if(resp!=undefined) localStorage.setItem('anomalies', JSON.stringify(resp))}),
+        concatMap(stats => this.stats.getLiters(this.token)),
+        tap(resp => {
+          if(resp!=undefined) localStorage.setItem('stats', JSON.stringify(resp))}),
+        concatMap(route => this.routeInfo.getLots(this.employeeID,this.token)),
+        tap(resp => {  console.log(resp); 
+            if(resp!=undefined) localStorage.setItem('route', JSON.stringify(resp))}),  
         tap(res => this.loadingCtrl.dismiss())
        ).subscribe(() => {      
         this.router.navigate(['/pendientes']);
+        this.menuCtrl.enable(true);
         }, (error) => {
-        console.log(error)
+        
+          console.log(error)
+          if(error.name == 'HttpErrorResponse'){
+            console.log('entramos al error')
+            this.loadingCtrl.dismiss();
+            console.log('después del dismiss')
+          }
         this.loadingCtrl.dismiss();
 
         this.alert('Alerta','Credenciales incorrectas')

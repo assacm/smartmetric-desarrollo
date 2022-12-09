@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-@Component({
+import {  Router } from '@angular/router';
+import { MenuController } from '@ionic/angular';@Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
@@ -14,7 +15,8 @@ export class AppComponent {
   ];
   public local = JSON.parse(localStorage.getItem('employee'));
   public employee; 
-  constructor() {
+ 
+  constructor(private menuCtrl: MenuController, private router:Router) {
      if(this.local){
       this.employee= this.local.firstname+' '+ this.local.lastname
      }
@@ -23,5 +25,8 @@ export class AppComponent {
 
   logOut(){
     localStorage.clear();
+    this.menuCtrl.enable(false)
+    this.router.navigate(['/log-in'])
+
   }
 }

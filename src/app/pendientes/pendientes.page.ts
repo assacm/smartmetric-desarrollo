@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, MenuController } from '@ionic/angular';
 import { Observable, Subject } from 'rxjs';
 import { ProductsService } from '../servicios/products.service';
 import { StorageService } from '../servicios/storage.service';
@@ -24,12 +24,11 @@ export class PendientesPage implements OnInit, AfterViewInit {
               private productS : ProductsService,
               private loadingCtrl: LoadingController,
               private update: StorageService,
-              private alertController: AlertController){}
+              private alertController: AlertController,
+              private menuCtrl:MenuController){}
 
   ngOnInit(){ 
-    console.log('pendientes oninit')
-    console.log(this.storage)
-
+    this.menuCtrl.enable(true)
     if(validValue(this.storage.products) != false){
     this.products= this.storage.products;
     }
@@ -39,8 +38,6 @@ export class PendientesPage implements OnInit, AfterViewInit {
 
   }
   ngAfterViewInit(){
-    console.log(this.storage)
-    console.log('AfterViewInit');
     this.updateStrg.getProducts().subscribe(res => {
       console.log('update storage service');
       this.products = res.text;
