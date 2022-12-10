@@ -10,11 +10,13 @@ export class EstadisticaPage implements OnInit {
   storage ={
     incomplete: JSON.parse(localStorage.getItem('products')) ,
     completed : JSON.parse(localStorage.getItem('completed')),
-    readings : JSON.parse(localStorage.getItem('readings'))
+    readings : JSON.parse(localStorage.getItem('readings')),
+    stats: JSON.parse(localStorage.getItem('stats'))
   }
   incomplete = [];
   completed = [];
   readings = [];
+  liters;
   stats = new Object();
   
 
@@ -32,14 +34,17 @@ export class EstadisticaPage implements OnInit {
       if(validValue(this.storage.completed) != false){
         this.readings= this.storage.readings;
       }      
+    if(validValue(this.storage.stats)!=false){
+      this.liters = this.storage.stats
+    }  
   
     this.stats = {
     route : 42,
     incomplete: this.incomplete.length,
     complete :this.completed.length,
     anomalies : this.anomalies(),
-    time : 50,
-    currentTime :20
+    lastMonth : this.liters.current_reading,
+    currentMonth : this.liters.last_reading
     }
   }
   anomalies(){

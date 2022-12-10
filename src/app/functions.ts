@@ -5,6 +5,5 @@ export function validValue(value:any){
     if(value != undefined || value != null){
         valid = true;
      }
-    console.log(valid)
      return valid;
 }
