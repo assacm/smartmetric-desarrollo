@@ -9,7 +9,9 @@ export const environment = {
               anomaly: 'smartmetricapi/getAnomalys',
               employe: 'users/login/',
               users: 'smartmetricapi/employe/',
-              readings :'smartmetricapi/readingss'
+              readings :'smartmetricapi/lecturepros',
+              stats:'smartmetricapi/statsservice',
+              routeInfo: 'smartmetricapi/userrouteinfo/'
             }
 };
 

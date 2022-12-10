@@ -14,10 +14,12 @@ import { UsersService } from './servicios/users.service';
 import {AnomaliasService} from '../app/servicios/anomalias.service'
 import { EmployeService } from './servicios/employe.service';
 import { ProductsService } from './servicios/products.service';
-import{ environment} from '../environments/environment'
 import { StorageService } from './servicios/storage.service';
+import { StatsService } from './servicios/stats.service';
+import { RouteInfoService } from './servicios/route-info.service';
 import { UploadService } from './servicios/upload.service';
 import { Camera } from '@ionic-native/camera/ngx';
+import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 
 
 @NgModule({
@@ -33,6 +35,9 @@ import { Camera } from '@ionic-native/camera/ngx';
     ProductsService,
     StorageService,
     UploadService,
+    RouteInfoService,
+    StatsService,
+    ScreenOrientation,
   { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

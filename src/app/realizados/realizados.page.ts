@@ -25,14 +25,24 @@ export class RealizadosPage implements OnInit, AfterViewInit {
   }
 
   upload(){
-    console.log('clicked');
-    /*this.uploadS.upload(this.completed).subscribe( res =>{
+   /*
+   let data ={
+    request_data: JSON.parse(localStorage.getItem('readings'))
+  }   
+   
+   */
+  let data =JSON.parse(localStorage.getItem('readings')) 
+    console.log(data);
+    this.uploadS.upload(data).subscribe( res =>{
+     
       console.log(res);
+     
       //if res === 200
       localStorage.removeItem('readings');
       localStorage.removeItem('completed');
+      window.location.reload();
       //else Fallo en la subida, intente de nuevo
-    }); */
+    }); 
     //probablemente necesite recargar pagina, checar ese detalle
   }
   
