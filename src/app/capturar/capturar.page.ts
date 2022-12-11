@@ -59,7 +59,7 @@ export class CapturarPage implements OnInit {
     private geolocation: Geolocation
     ) { 
       this.fgReading = this.fb.group({
-        "current": new FormControl("",Validators.required),
+        "current": new FormControl("",[Validators.required, Validators.pattern('[0-9]+')]),
         "confirm": new FormControl("",[Validators.required, Validators.pattern('[0-9]+')])
       })
 
@@ -81,66 +81,49 @@ export class CapturarPage implements OnInit {
       }
     } 
   }
-  
-  validation(){
-
+  getStatus(){
     var fgVal = this.fgReading.value;
     this.current = fgVal.current;
     this.confirm = fgVal.confirm;
-    console.log(this.fgReading.errors)
-    if (this.fgReading.invalid) {
-      this.alert('Alerta', 'Verifique la lectura ingresada.')
-     }
-     else{      
-        if(this.current != this.confirm){
-           this.alert('Alerta','La lectura ingresada no coincide')
-         }else{
-           this.pushReading(
-            this.employeeID,
-            this.productID,
-            this.current,
-            this.anomalies, 
-            this.descAnomalies,
-            this.image)
-           
-           }
-      }
+    if(this.fgReading.invalid){ return null}
+    if(this.current != this.confirm){return 'different'}
+    if(Number(this.current) <= Number(this.client.last_measure)){ return 'less'} // la lectura puede ser igual a la lectura anterior?
 
+    return 'ok'
+  }
+  validation(){
+    let message;
+    let handler = {
+      null:()=>{ message='Verifique la lectura ingresada'},
+      'different':()=>{message='La lectura ingresada no coincide'},
+      'less':()=>{message='La lectura ingresada es menor a la anterior'},
+      'ok':()=>{ 
+        this.pushReading(
+          this.employeeID,
+          this.productID,
+          this.current,
+          this.anomalies, 
+          this.descAnomalies,
+          this.image)
+      }
+    }
+    let status = this.getStatus();
+    handler[status]();
+    if(message){this.alert('Alerta', message)}
+    
       this.current='';
-      this.confirm='';
-      
-      
+      this.confirm='';  
   }
       
-  async alert(header:string,message:string, func?:any){
+  async alert(header:string,message:string){
     const alert = await this.alertController.create({
       header: header,
       message: message,
-      //buttons: ['Aceptar'],
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: (data: any) => {
-            console.log('Canceled', data);
-          }
-        },
-        {
-          text: 'Aceptar',
-          handler: func
-          //(data: any) => {
-          //  console.log('Saved Information', data);
-         // }
-        }
-      ]
+      buttons: ['Aceptar'],
     });
 
     await alert.present();
   }
-  
-  pushAnomaly(item){
-    //this.anomalies.unshift(item);
-    console.log(item);
- } 
 
   handleChange(e) {
    let ev = e.detail.value
@@ -186,11 +169,7 @@ export class CapturarPage implements OnInit {
   }else{
     this.alert('Captura Incompleta', 'Debe tener un mínimo de 2 fotos.')
   }
-    //meter el alert antes del navigate
-    //hacer un if(photos.length >=2){ } else{ this.alert('Alerta', 'Se requiere de 2 fotos')}
   }
-
-    //Codigo para la funcionalidad de la camarav
     takePicture() {
       const options: CameraOptions = {
         quality: 30,

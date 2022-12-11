@@ -25,13 +25,14 @@ export class RealizadosPage implements OnInit, AfterViewInit {
   }
 
   upload(){
-   /*
+   /*   let data =JSON.parse(localStorage.getItem('readings')) 
+
+  
+   
+   */
    let data ={
     request_data: JSON.parse(localStorage.getItem('readings'))
   }   
-   
-   */
-  let data =JSON.parse(localStorage.getItem('readings')) 
     console.log(data);
     this.uploadS.upload(data).subscribe( res =>{
      
