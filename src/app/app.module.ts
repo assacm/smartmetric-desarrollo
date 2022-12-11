@@ -20,6 +20,7 @@ import { RouteInfoService } from './servicios/route-info.service';
 import { UploadService } from './servicios/upload.service';
 import { Camera } from '@ionic-native/camera/ngx';
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
+import { Network } from '@awesome-cordova-plugins/network/ngx';
 
 
 @NgModule({
