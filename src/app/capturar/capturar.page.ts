@@ -5,7 +5,7 @@ import { IProducts,Datum, Client, IReading, IReadings } from '../interfaces';
 import { FormGroup, FormArray, Validators, FormBuilder, FormControl, RequiredValidator } from '@angular/forms';
 import { Observable, of, Subject } from 'rxjs';
 import { StorageService } from '../servicios/storage.service';
-
+import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 @Component({
@@ -26,8 +26,10 @@ export class CapturarPage implements OnInit {
 
   employeeID:string;
   productID:string;
-  anomalies:number[] = [] //id anomalías seleccionadas
-  descAnomalies:string[] = []
+ // anomalies:number[] = [] //id anomalías seleccionadas
+ // descAnomalies:string[] = []
+  anomalies:number;
+  descAnomalies:string;
   latlong:string
   date = new Date();
   
@@ -53,11 +55,12 @@ export class CapturarPage implements OnInit {
     private router: Router, 
     private activatedRoute: ActivatedRoute,
     public fb: FormBuilder,
-    private updateStrg : StorageService
+    private updateStrg : StorageService,
+    private geolocation: Geolocation
     ) { 
       this.fgReading = this.fb.group({
         "current": new FormControl("",Validators.required),
-        "confirm": new FormControl("",Validators.required)
+        "confirm": new FormControl("",[Validators.required, Validators.pattern('[0-9]+')])
       })
 
     }
@@ -84,9 +87,9 @@ export class CapturarPage implements OnInit {
     var fgVal = this.fgReading.value;
     this.current = fgVal.current;
     this.confirm = fgVal.confirm;
-
+    console.log(this.fgReading.errors)
     if (this.fgReading.invalid) {
-      this.alert('Alerta', 'Debe llenar los campos')
+      this.alert('Alerta', 'Verifique la lectura ingresada.')
      }
      else{      
         if(this.current != this.confirm){
@@ -99,6 +102,7 @@ export class CapturarPage implements OnInit {
             this.anomalies, 
             this.descAnomalies,
             this.image)
+           
            }
       }
 
@@ -108,58 +112,80 @@ export class CapturarPage implements OnInit {
       
   }
       
-  async alert(header:string,message:string){
+  async alert(header:string,message:string, func?:any){
     const alert = await this.alertController.create({
       header: header,
       message: message,
-      buttons: ['Aceptar'],
+      //buttons: ['Aceptar'],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: (data: any) => {
+            console.log('Canceled', data);
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: func
+          //(data: any) => {
+          //  console.log('Saved Information', data);
+         // }
+        }
+      ]
     });
 
     await alert.present();
   }
   
   pushAnomaly(item){
-    this.anomalies.unshift(item);
+    //this.anomalies.unshift(item);
     console.log(item);
  } 
 
   handleChange(e) {
    let ev = e.detail.value
-   this.descAnomalies = ev.map( res => res.label) //arreglo con la desc
-   this.anomalies= ev.map( res => {return Number(res.rowid)}) //arreglo con los id
-
+   //this.descAnomalies = ev.map( res => res.label) //arreglo con la desc
+   //this.anomalies= ev.map( res => {return Number(res.rowid)}) //arreglo con los id
+     this.descAnomalies=ev.label;
+     this.anomalies=ev.rowid;
+     console.log(ev)
   }
-  pushReading(employee:string,product:string,hydrometer:string,anomaly:number[], descAnomaly : string[],photos:string[]){
+
+  pushReading(employee:string,product:string,hydrometer:string,anomaly:number, descAnomaly : string,photos:string[]){
     let reading;
     if(localStorage.getItem('readings')){
       this.readings=JSON.parse(localStorage.getItem('readings'))
     } 
-    navigator.geolocation.getCurrentPosition((position) => { 
-     let lat = position.coords.latitude.toString(); 
-     let lon = position.coords.longitude.toString();
-     let loc = lat + ', ' + lon
-     reading = {
-      employee_id : employee,
-      product_id : product,
-      hydrometer  : hydrometer,
-      date :  `${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()} ${this.date.getHours()}:${this.date.getMinutes()}:${this.date.getSeconds()}`,
-      //date        : this.date.toString(),
-      latlong : loc,
-      photos: photos,
-      anomaly : anomaly,
-      description: descAnomaly
-     }
-     this.reading = reading
-     this.readings.push(reading);
-     
-     localStorage.setItem('readings', JSON.stringify(this.readings));
-     console.log(reading)
-     this.pendingsUpdate();
-     console.log(this.date);
-     this.router.navigate( ['/pendientes']);
-     
-    });
-    this.alert('Finalizado', 'Captura realizada con éxito')
+    if(photos.length >=2){
+    this.geolocation.getCurrentPosition().then((resp)=>{console.log(resp)
+      let lat = resp.coords.latitude.toString(); 
+      let lon = resp.coords.longitude.toString();
+      let loc = lat + ', ' + lon
+      reading = {
+        employee_id : employee,
+        product_id : product,
+        hydrometer  : hydrometer,
+        date :  `${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()} ${this.date.getHours()}:${this.date.getMinutes()}:${this.date.getSeconds()}`,
+        latlong : loc,
+        photos: photos,
+        anomaly : anomaly,
+        description: descAnomaly
+       }
+       console.log(reading)
+       this.readings.push(reading);     
+        localStorage.setItem('readings', JSON.stringify(this.readings));
+        console.log(reading)
+        this.pendingsUpdate();
+        console.log(this.date);
+        this.alert('Finalizado', 'Captura realizada con éxito')
+        this.router.navigate( ['/pendientes']);
+    }).catch((error)=>{
+      console.log('Error getting location', error)
+      this.alert('Alerta', 'Error al realizar captura')
+    })
+  }else{
+    this.alert('Captura Incompleta', 'Debe tener un mínimo de 2 fotos.')
+  }
     //meter el alert antes del navigate
     //hacer un if(photos.length >=2){ } else{ this.alert('Alerta', 'Se requiere de 2 fotos')}
   }
@@ -252,18 +278,6 @@ export class CapturarPage implements OnInit {
   }
 }
 
- /* 
-      employee_id (integer): can be empty (get from employee assign) ,
-      product_id (integer): product register ,
-      hydrometer (integer): actual hydrometer ,
-      date (string, optional): date ,
-      latlong (string, optional): latitude Longitude (don't know for what) ,
-      photos (string, optional): photos in base64 ,
-      anomaly (integer, optional): fk_anomaly from smartmetric_anomalys ,
-      description (string, optional): anomaly description
-      
-
-   */
 
 
  
