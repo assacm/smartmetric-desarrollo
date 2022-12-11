@@ -20,6 +20,7 @@ import { RouteInfoService } from './servicios/route-info.service';
 import { UploadService } from './servicios/upload.service';
 import { Camera } from '@ionic-native/camera/ngx';
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
+import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/n
     RouteInfoService,
     StatsService,
     ScreenOrientation,
+    Geolocation,
   { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

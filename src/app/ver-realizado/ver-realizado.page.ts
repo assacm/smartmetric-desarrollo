@@ -29,7 +29,8 @@ export class VerRealizadoPage implements OnInit {
       current : this.readingInfo().hydrometer,
       anomalies : this.readingInfo().description,
       date: this.dateSpanish(this.readingInfo().date),
-      name:this.selected().client.name    
+      name:this.selected().client.name,
+      images: this.readingInfo().photos
    }
   }
  

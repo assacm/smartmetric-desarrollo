@@ -29,21 +29,21 @@
       </div>  
       <div [formGroup]="fgReading"  class="captura">
                 <ion-label>Ingresar lectura</ion-label>
-                <ion-input formControlName="current" type="password"></ion-input>
+                <ion-input formControlName="current" type="password" pattern="[0-9]+"></ion-input>
                 <ion-label>Confirmar lectura</ion-label>
-                <ion-input formControlName="confirm" type="password"></ion-input>
+                <ion-input formControlName="confirm" type="password" pattern="[0-9]+"></ion-input>
       </div>
       <div class="anomalias">
         <ion-list>
           <ion-item>
             <ion-select
-              multiple="true"
+              
               placeholder="Seleccione anomalía"
               (ionChange)="handleChange($event)"
               
             >
             <!--               <ion-select-option *ngFor="let anomaly of details" value="{{anomaly.rowid}}">{{anomaly.label}}</ion-select-option>
- -->
+ --><!--multiple="true"-->
               <ion-select-option *ngFor="let anomaly of details" [value]="anomaly">{{anomaly.label}}</ion-select-option>
             </ion-select>
           </ion-item>
