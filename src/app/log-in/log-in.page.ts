@@ -13,6 +13,7 @@ import { ComponentsModule } from '../components/components.module';
 import { StatsService } from '../servicios/stats.service';
 import { RouteInfoService } from '../servicios/route-info.service';
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
+import { Network } from '@awesome-cordova-plugins/network/ngx';
 
 @Component({
   selector: 'app-log-in',
@@ -26,8 +27,11 @@ export class LogInPage implements OnInit {
   employeeID:any;
   eye = 'eye-off-outline';
   type ='password';
+  connection : boolean = true;
    
-  constructor(private alertController: AlertController, 
+  constructor(
+    private network: Network, 
+    private alertController: AlertController, 
     public fb: FormBuilder, 
     private router: Router, 
     private activatedRoute: ActivatedRoute, 
@@ -44,6 +48,9 @@ export class LogInPage implements OnInit {
       "user": new FormControl("",Validators.required),
       "password": new FormControl("",Validators.compose([Validators.required,Validators.minLength(8)]) )
     })
+    window.addEventListener('offline', ()=>{
+      this.connection = false;
+     })
   }
 
   ngOnInit() {
@@ -72,51 +79,76 @@ export class LogInPage implements OnInit {
       "password": datos.password
     }
 
-    if (this.formularLogin.invalid) {      
-      this.alert('Alerta', 'Datos incompletos')
+    if (this.connection != true) {
+      this.loadingCtrl.dismiss();
+      this.alert('Alerta', 'No cuentas con conexion a Internet')
+      console.log(this.connection);
+      
+
     }
     else{
-      this.showLoading();
-      //cargar servicios de ruta y estadísticas
-      this.loginService.login(jsonLogin).pipe(
-        tap( post => {this.token=post['success']['token'];
-        localStorage.setItem('token', this.token)}),
-        concatMap( employee => this.employe.employeInfo(jsonLogin.login, this.token)),
-        tap( resp => { if(resp!=undefined) localStorage.setItem('employee', JSON.stringify(resp))}),
-        concatMap( products => this.products.products(this.token, products.id)),
-        tap( resp => { 
-         this.employeeID=resp[0].employee
-          if(resp[0].data!==undefined){
-          localStorage.setItem('products', JSON.stringify(resp[0].data))
-          }}),
-        concatMap( anomalies => this.anomalias.getAnomalias(this.token)),
-        tap( resp => { if(resp!=undefined) localStorage.setItem('anomalies', JSON.stringify(resp))}),
-        concatMap(stats => this.stats.getLiters(this.token)),
-        tap(resp => {
-          if(resp!=undefined) localStorage.setItem('stats', JSON.stringify(resp))}),
-        concatMap(route => this.routeInfo.getLots(this.employeeID,this.token)),
-        tap(resp => {  console.log(resp); 
-            if(resp!=undefined) localStorage.setItem('route', JSON.stringify(resp))}),  
-        tap(res => this.loadingCtrl.dismiss())
-       ).subscribe(() => {      
-        this.router.navigate(['/pendientes']);
-        this.menuCtrl.enable(true);
-        }, (error) => {
-        
-          console.log(error)
-          if(error.name == 'HttpErrorResponse'){
-            console.log('entramos al error')
-            this.loadingCtrl.dismiss();
-            console.log('después del dismiss')
-          }
-        this.loadingCtrl.dismiss();
-
-        this.alert('Alerta','Credenciales incorrectas')
-      })
+      console.log(this.connection);
       
+      if (this.formularLogin.invalid) {      
+        this.alert('Alerta', 'Datos incompletos')
+      }
+      else{
+        this.showLoading();
+        //cargar servicios de ruta y estadísticas
+        this.loginService.login(jsonLogin).pipe(
+          tap( post => {this.token=post['success']['token'];
+          localStorage.setItem('token', this.token)}),
+          concatMap( employee => this.employe.employeInfo(jsonLogin.login, this.token)),
+          tap( resp => { if(resp!=undefined) localStorage.setItem('employee', JSON.stringify(resp))}),
+          concatMap( products => this.products.products(this.token, products.id)),
+          tap( resp => { 
+           this.employeeID=resp[0].employee
+            if(resp[0].data!==undefined){
+            localStorage.setItem('products', JSON.stringify(resp[0].data))
+            }}),
+          concatMap( anomalies => this.anomalias.getAnomalias(this.token)),
+          tap( resp => { if(resp!=undefined) localStorage.setItem('anomalies', JSON.stringify(resp))}),
+          concatMap(stats => this.stats.getLiters(this.token)),
+          tap(resp => {
+            if(resp!=undefined) localStorage.setItem('stats', JSON.stringify(resp))}),
+          concatMap(route => this.routeInfo.getLots(this.employeeID,this.token)),
+          tap(resp => {  console.log(resp); 
+              if(resp!=undefined) localStorage.setItem('route', JSON.stringify(resp))}),  
+          tap(res => this.loadingCtrl.dismiss())
+         ).subscribe(() => {      
+          this.router.navigate(['/pendientes']);
+          this.menuCtrl.enable(true);
+          }, (error) => {
+          
+            console.log(error)
+            if(error.name == 'HttpErrorResponse'){
+              console.log('entramos al error')
+              this.loadingCtrl.dismiss();
+              console.log('después del dismiss')
+            }
+          this.loadingCtrl.dismiss();
+  
+          this.alert('Alerta','Credenciales incorrectas')
+        })
+        
+      }
     }
+
     this.formularLogin.reset();
   }
+
+  //Verificar conexion a internet LOGIN
+  async openAlert(){
+    const alert = await this.alertController.create({
+      header: 'Verificar conexion a internet',
+      message: 'Usted no tiene conexion a internet',
+      buttons: [{
+        text: "Ok"
+      }]
+    })
+    await alert.present();
+  }
+  //DONE
 
   async alert(header:string,message:string){
     const alert = await this.alertController.create({

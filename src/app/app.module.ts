@@ -27,7 +27,8 @@ import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: 
-  [ Camera,
+  [ Network,
+    Camera,
     HttpMetodosService,
     LoginServiceService,
     UsersService,

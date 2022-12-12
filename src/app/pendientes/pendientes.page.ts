@@ -5,6 +5,8 @@ import { ProductsService } from '../servicios/products.service';
 import { StorageService } from '../servicios/storage.service';
 import { AlertController } from '@ionic/angular';
 import { validValue } from '../functions';
+import { Network } from '@awesome-cordova-plugins/network/ngx';
+
 @Component({
   selector: 'app-pendientes',
   templateUrl: './pendientes.page.html',
@@ -19,13 +21,20 @@ export class PendientesPage implements OnInit, AfterViewInit {
    products = [];
    employee ;
    reload = new Subject<any>();
+   connection : boolean = true;
 
-  constructor(private updateStrg : StorageService, 
+  constructor(
+              private network: Network, 
+              private updateStrg : StorageService, 
               private productS : ProductsService,
               private loadingCtrl: LoadingController,
               private update: StorageService,
               private alertController: AlertController,
-              private menuCtrl:MenuController){}
+              private menuCtrl:MenuController){
+                window.addEventListener('offline', ()=>{
+                  this.connection = false;
+                 })
+              }
 
   ngOnInit(){ 
     this.menuCtrl.enable(true)
@@ -38,6 +47,11 @@ export class PendientesPage implements OnInit, AfterViewInit {
 
   }
   ngAfterViewInit(){
+    window.addEventListener('offline', ()=>{
+      this.connection = false;
+      this.loadingCtrl.dismiss;
+     })
+
     this.updateStrg.getProducts().subscribe(res => {
       console.log('update storage service');
       this.products = res.text;
@@ -49,7 +63,7 @@ export class PendientesPage implements OnInit, AfterViewInit {
       this.products = res;
       if(this.products){    
         this.loadingCtrl.dismiss();
-        window.location.reload(); 
+        /*window.location.reload();*/ 
        }
       if(res == null){
         this.loadingCtrl.dismiss();
@@ -69,12 +83,31 @@ export class PendientesPage implements OnInit, AfterViewInit {
   }
   download(){
    this.showLoading()
-   this.productS.products(localStorage.getItem('token'),this.employee.id)
+
+    console.log(this.connection);
+    
+
+   if (this.connection == false) {
+    this.loadingCtrl.dismiss();
+
+
+    console.log("ANTES DEL ALERT");
+    
+    this.alert('Alerta', 'No cuentas con conexion a Internet')
+    console.log(this.connection);
+    
+    console.log("DESPUES DEL ALERT");
+    
+
+  }
+  else{
+    this.productS.products(localStorage.getItem('token'),this.employee.id)
    .subscribe(res =>{
     if(res[0].data != undefined)
     localStorage.setItem('products', JSON.stringify(res[0].data)) ; 
     this.reload.next(JSON.parse(localStorage.getItem('products'))); 
    });
+  }
   }
   async showLoading() {
     const loading = await this.loadingCtrl.create({
