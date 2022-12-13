@@ -3,6 +3,7 @@ import { StorageService } from '../servicios/storage.service';
 import { UploadService } from '../servicios/upload.service';
 import { httpErrors } from '../functions';
 import { AlertController } from '@ionic/angular';
+
 @Component({
   selector: 'app-realizados',
   templateUrl: './realizados.page.html',
@@ -12,9 +13,11 @@ export class RealizadosPage implements OnInit, AfterViewInit {
   
    completed = JSON.parse(localStorage.getItem('completed'));
   
+
    constructor(private updateStrg : StorageService, 
     private uploadS : UploadService,
     private alertController: AlertController) { }
+
  
   ngAfterViewInit(): void {
      this.updateStrg.getCompleted().subscribe(res => {
@@ -27,9 +30,12 @@ export class RealizadosPage implements OnInit, AfterViewInit {
 
   }
 
+  connection : boolean = true;
+
   upload(){
    /*   let data =JSON.parse(localStorage.getItem('readings')) 
    */
+
    let data ={
     request_data: JSON.parse(localStorage.getItem('readings'))
   }   
@@ -47,6 +53,7 @@ export class RealizadosPage implements OnInit, AfterViewInit {
       let message =  httpErrors(error.status)
       this.alert('Alerta',message)
     }); 
+
   }
   async alert(header:string,message:string){
     const alert = await this.alertController.create({

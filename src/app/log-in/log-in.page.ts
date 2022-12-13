@@ -15,6 +15,8 @@ import { RouteInfoService } from '../servicios/route-info.service';
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 import { httpErrors } from '../functions';
 import { Subject } from 'rxjs/internal/Subject';
+import { Network } from '@awesome-cordova-plugins/network/ngx';
+
 @Component({
   selector: 'app-log-in',
   templateUrl: './log-in.page.html',
@@ -27,8 +29,15 @@ export class LogInPage implements OnInit {
   employeeID:any;
   eye = 'eye-off-outline';
   type ='password';
+
   errorSubject = new Subject<string>();
   constructor(private alertController: AlertController, 
+
+  connection : boolean = true;
+   
+  constructor(
+    private network: Network, 
+    private alertController: AlertController, 
     public fb: FormBuilder, 
     private router: Router, 
     private activatedRoute: ActivatedRoute, 
@@ -45,6 +54,9 @@ export class LogInPage implements OnInit {
       "user": new FormControl("",Validators.required),
       "password": new FormControl("",Validators.compose([Validators.required,Validators.minLength(8)]) )
     })
+    window.addEventListener('offline', ()=>{
+      this.connection = false;
+     })
   }
 
   ngOnInit() {
@@ -74,14 +86,18 @@ export class LogInPage implements OnInit {
       "password": datos.password
     }
 
-    if (this.formularLogin.invalid) {      
-      this.alert('Alerta', 'Datos incompletos')
+    if (this.connection != true) {
+      this.loadingCtrl.dismiss();
+      this.alert('Alerta', 'No cuentas con conexion a Internet')
+      console.log(this.connection);
+     
     }
     else{
-      //this.showLoading();
-      //cargar servicios de ruta y estadísticas
-      this.loginService.login(jsonLogin).pipe(
-      
+    
+     if (this.formularLogin.invalid) {      
+        this.alert('Alerta', 'Datos incompletos')
+      }{
+      this.loginService.login(jsonLogin).pipe(     
         tap( post => { console.log(post)
           this.showLoading();
           this.token=post['success']['token'];
@@ -110,11 +126,23 @@ export class LogInPage implements OnInit {
         let message =  httpErrors(error.status)
         this.alert('Alerta',message)
       })
-      
-    }
-    
+      }
+
     this.formularLogin.reset();
   }
+
+  //Verificar conexion a internet LOGIN
+  async openAlert(){
+    const alert = await this.alertController.create({
+      header: 'Verificar conexion a internet',
+      message: 'Usted no tiene conexion a internet',
+      buttons: [{
+        text: "Ok"
+      }]
+    })
+    await alert.present();
+  }
+  //DONE
 
   async alert(header:string,message:string){
     const alert = await this.alertController.create({

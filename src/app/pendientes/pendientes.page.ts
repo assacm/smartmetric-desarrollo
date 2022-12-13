@@ -8,6 +8,7 @@ import { validValue } from '../functions';
 import {finalize,tap } from 'rxjs/operators';
 import { httpErrors } from '../functions';
 
+
 @Component({
   selector: 'app-pendientes',
   templateUrl: './pendientes.page.html',
@@ -23,17 +24,17 @@ export class PendientesPage implements OnInit, AfterViewInit {
    products = [];
    employee ;
    reload = new Subject<any>();
+
    errorMessage: string;
    errorSubject = new Subject<string>();
    
-  constructor(private updateStrg : StorageService, 
+  constructor(
+              private updateStrg : StorageService, 
               private productS : ProductsService,
               private loadingCtrl: LoadingController,
               private update: StorageService,
               private alertController: AlertController,
-              private menuCtrl:MenuController){
-               
-              }
+              private menuCtrl:MenuController){}
 
   ngOnInit(){ 
     this.menuCtrl.enable(true)
@@ -46,7 +47,7 @@ export class PendientesPage implements OnInit, AfterViewInit {
 
   }
   ngAfterViewInit(){
-    
+
     this.updateStrg.getProducts().subscribe(res => {
      // console.log('update storage service');
       this.products = res.text;
@@ -56,6 +57,7 @@ export class PendientesPage implements OnInit, AfterViewInit {
     //  console.log('reload subject')
       console.log(res)
       this.products = res;
+
      if(this.products){    
        //if(this.loadingCtrl){console.log('dismiss loading');this.loadingCtrl.dismiss()}
         window.location.reload(); 
@@ -76,7 +78,7 @@ export class PendientesPage implements OnInit, AfterViewInit {
   }
 
   download(){
-
+  
   this.productS.products(localStorage.getItem('token'),this.employee.id)
   .pipe( 
      tap(res =>{
@@ -96,26 +98,8 @@ export class PendientesPage implements OnInit, AfterViewInit {
     let message =  httpErrors(error.status)
     this.alert('Alerta',message)
   })
-     
-     
-    /* 
-      this.productS.products(localStorage.getItem('token'),this.employee.id)
-      .pipe(catchError(error => {
-        console.error('There was an error!', error);
-        let message =  httpErrors(error.status)
-        this.alert('Alerta',message)
-        if(this.loadingCtrl){this.loadingCtrl.dismiss()}
-      return of()
-      //throwError(this.errorMessage)
-      }),tap()).subscribe(res =>{
-        this.showLoading()
-      if(res[0].data != undefined)
-      localStorage.setItem('products', JSON.stringify(res[0].data)) ; 
-      this.reload.next(JSON.parse(localStorage.getItem('products'))); 
-      });
-      console.log('Error Message: ' + this.errorMessage) */
-  
   }
+  
   async showLoading() {
     const loading = await this.loadingCtrl.create({
       message: 'Obteniendo ruta...',

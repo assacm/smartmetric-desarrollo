@@ -14,6 +14,7 @@
       <ion-title size="large">Pendientes</ion-title>
     </ion-toolbar>
   </ion-header>
+
   <ion-list  *ngIf="products">
     <app-cards-products [routerLink]="['/capturar', i]" [client]="client" *ngFor="let client of products; let i = index"></app-cards-products>
   </ion-list>
