@@ -13,7 +13,8 @@ import { ComponentsModule } from '../components/components.module';
 import { StatsService } from '../servicios/stats.service';
 import { RouteInfoService } from '../servicios/route-info.service';
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
-
+import { httpErrors } from '../functions';
+import { Subject } from 'rxjs/internal/Subject';
 @Component({
   selector: 'app-log-in',
   templateUrl: './log-in.page.html',
@@ -26,7 +27,7 @@ export class LogInPage implements OnInit {
   employeeID:any;
   eye = 'eye-off-outline';
   type ='password';
-   
+  errorSubject = new Subject<string>();
   constructor(private alertController: AlertController, 
     public fb: FormBuilder, 
     private router: Router, 
@@ -53,6 +54,7 @@ export class LogInPage implements OnInit {
      if(this.token){ console.log(this.token); this.router.navigate(['/pendientes'])}
      this.menuCtrl.enable(false);
   }
+  
   visible(){
     
     if(this.eye =='eye-outline'){
@@ -76,15 +78,18 @@ export class LogInPage implements OnInit {
       this.alert('Alerta', 'Datos incompletos')
     }
     else{
-      this.showLoading();
+      //this.showLoading();
       //cargar servicios de ruta y estadísticas
       this.loginService.login(jsonLogin).pipe(
-        tap( post => {this.token=post['success']['token'];
+      
+        tap( post => { console.log(post)
+          this.showLoading();
+          this.token=post['success']['token'];
         localStorage.setItem('token', this.token)}),
         concatMap( employee => this.employe.employeInfo(jsonLogin.login, this.token)),
         tap( resp => { if(resp!=undefined) localStorage.setItem('employee', JSON.stringify(resp))}),
         concatMap( products => this.products.products(this.token, products.id)),
-        tap( resp => { 
+        tap( resp => { console.log(resp)
          this.employeeID=resp[0].employee
           if(resp[0].data!==undefined){
           localStorage.setItem('products', JSON.stringify(resp[0].data))
@@ -97,24 +102,17 @@ export class LogInPage implements OnInit {
         concatMap(route => this.routeInfo.getLots(this.employeeID,this.token)),
         tap(resp => {  console.log(resp); 
             if(resp!=undefined) localStorage.setItem('route', JSON.stringify(resp))}),  
-        tap(res => this.loadingCtrl.dismiss())
+        tap(res =>{ if(this.loadingCtrl){this.loadingCtrl.dismiss()}})
        ).subscribe(() => {      
         this.router.navigate(['/pendientes']);
         this.menuCtrl.enable(true);
         }, (error) => {
-        
-          console.log(error)
-          if(error.name == 'HttpErrorResponse'){
-            console.log('entramos al error')
-            this.loadingCtrl.dismiss();
-            console.log('después del dismiss')
-          }
-        this.loadingCtrl.dismiss();
-
-        this.alert('Alerta','Credenciales incorrectas')
+        let message =  httpErrors(error.status)
+        this.alert('Alerta',message)
       })
       
     }
+    
     this.formularLogin.reset();
   }
 
